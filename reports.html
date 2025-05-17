@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports | Expense Tracker</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="logo">
+                <h1>FinTrack</h1>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="index.html"><i class="fas fa-chart-line"></i> Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a href="expenses.html"><i class="fas fa-receipt"></i> Expenses & Income</a>
+                </li>
+                <li class="nav-item">
+                    <a href="currencies.html"><i class="fas fa-exchange-alt"></i> Currency Tracker</a>
+                </li>
+                <li class="nav-item">
+                    <a href="tax-center.html"><i class="fas fa-file-invoice"></i> Tax Center</a>
+                </li>
+                <li class="nav-item active">
+                    <a href="reports.html"><i class="fas fa-chart-pie"></i> Reports</a>
+                </li>
+                <li class="nav-item">
+                    <a href="settings.html"><i class="fas fa-cog"></i> Settings</a>
+                </li>
+            </ul>
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <img src="images/avatar-placeholder.png" alt="User Profile">
+                    <div class="user-info">
+                        <p class="user-name">John Doe</p>
+                        <p class="user-role">Freelancer</p>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <header class="content-header">
+                <div class="page-title">
+                    <h2>Reports</h2>
+                    <p class="subtitle">Generate and analyze financial reports for your business</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-secondary"><i class="fas fa-download"></i> Export Data</button>
+                    <button class="btn btn-primary" id="createReportBtn"><i class="fas fa-plus"></i> New Report</button>
+                </div>
+            </header>
+
+            <!-- Reports Content -->
+            <div class="reports-container">
+                <!-- Report Type Navigation -->
+                <div class="reports-nav">
+                    <ul class="reports-tab-nav">
+                        <li class="tab-item active" data-tab="income-expense">Income & Expenses</li>
+                        <li class="tab-item" data-tab="profit-loss">Profit & Loss</li>
+                        <li class="tab-item" data-tab="tax">Tax Summary</li>
+                        <li class="tab-item" data-tab="client">Client Analysis</li>
+                    </ul>
+                </div>
+
+                <!-- Filter and Date Range Controls -->
+                <div class="reports-controls">
+                    <div class="date-range-selector">
+                        <label>Date Range:</label>
+                        <div class="date-picker">
+                            <select id="date-preset">
+                                <option value="this-month">This Month</option>
+                                <option value="last-month">Last Month</option>
+                                <option value="this-quarter">This Quarter</option>
+                                <option value="last-quarter">Last Quarter</option>
+                                <option value="this-year" selected>This Year</option>
+                                <option value="last-year">Last Year</option>
+                                <option value="custom">Custom Range</option>
+                            </select>
+                            <div class="custom-date-inputs">
+                                <input type="date" id="start-date" placeholder="Start Date">
+                                <span>to</span>
+                                <input type="date" id="end-date" placeholder="End Date">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="filter-controls">
+                        <div class="filter-item">
+                            <label>Group By:</label>
+                            <select id="group-by">
+                                <option value="month" selected>Month</option>
+                                <option value="quarter">Quarter</option>
+                                <option value="category">Category</option>
+                                <option value="client">Client</option>
+                            </select>
+                        </div>
+                        <div class="filter-item">
+                            <label>Currency:</label>
+                            <select id="currency">
+                                <option value="MYR" selected>MYR (Primary)</option>
+                                <option value="USD">USD</option>
+                                <option value="EUR">EUR</option>
+                                <option value="GBP">GBP</option>
+                            </select>
+                        </div>
+                        <button id="apply-filters" class="btn btn-sm">Apply</button>
+                    </div>
+                </div>
+
+                <div class="dashboard-content">
+                    <!-- Financial Summary Cards -->
+                    <div class="card-grid">
+                        <!-- Total Income Card -->
+                        <div class="dashboard-summary-card">
+                            <div class="card-icon income-icon">
+                                <i class="fas fa-arrow-down"></i>
+                            </div>
+                            <div class="card-content">
+                                <h3 class="card-title">Total Income</h3>
+                                <p class="card-value">RM 126,450.00</p>
+                                <p class="card-period">Jan - Dec 2025</p>
+                            </div>
+                        </div>
+                
+                        <!-- Total Expenses Card -->
+                        <div class="dashboard-summary-card">
+                            <div class="card-icon expense-icon">
+                                <i class="fas fa-arrow-up"></i>
+                            </div>
+                            <div class="card-content">
+                                <h3 class="card-title">Total Expenses</h3>
+                                <p class="card-value">RM 42,380.00</p>
+                                <p class="card-period">Jan - Dec 2025</p>
+                            </div>
+                        </div>
+                
+                        <!-- Net Profit Card -->
+                        <div class="dashboard-summary-card">
+                            <div class="card-icon profit-icon">
+                                <i class="fas fa-wallet"></i>
+                            </div>
+                            <div class="card-content">
+                                <h3 class="card-title">Net Profit</h3>
+                                <p class="card-value">RM 84,070.00</p>
+                                <p class="card-period">Jan - Dec 2025</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Report Chart -->
+                <div class="report-chart-container">
+                    <div class="chart-header">
+                        <h3>Income & Expenses Overview</h3>
+                        <div class="chart-actions">
+                            <button class="btn btn-sm btn-outline"><i class="fas fa-download"></i> Export</button>
+                        </div>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="incomeExpenseChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Data Breakdown Section -->
+                <div class="data-breakdown">
+                    <div class="breakdown-section">
+                        <div class="breakdown-header">
+                            <h3>Income Distribution</h3>
+                        </div>
+                        <div class="breakdown-content">
+                            <div class="chart-wrapper pie-chart">
+                                <canvas id="incomePieChart"></canvas>
+                            </div>
+                            <div class="breakdown-list">
+                                <div class="breakdown-item">
+                                    <div class="item-color" style="background-color: #4E79A7;"></div>
+                                    <div class="item-details">
+                                        <div class="item-name">Development</div>
+                                        <div class="item-value">RM 75,870.00</div>
+                                    </div>
+                                    <div class="item-percentage">60%</div>
+                                </div>
+                                <div class="breakdown-item">
+                                    <div class="item-color" style="background-color: #F28E2B;"></div>
+                                    <div class="item-details">
+                                        <div class="item-name">Design</div>
+                                        <div class="item-value">RM 30,348.00</div>
+                                    </div>
+                                    <div class="item-percentage">24%</div>
+                                </div>
+                                <div class="breakdown-item">
+                                    <div class="item-color" style="background-color: #E15759;"></div>
+                                    <div class="item-details">
+                                        <div class="item-name">Consulting</div>
+                                        <div class="item-value">RM 20,232.00</div>
+                                    </div>
+                                    <div class="item-percentage">16%</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="breakdown-section">
+                        <div class="breakdown-header">
+                            <h3>Expense Categories</h3>
+                        </div>
+                        <div class="breakdown-content">
+                            <div class="chart-wrapper pie-chart">
+                                <canvas id="expensePieChart"></canvas>
+                            </div>
+                            <div class="breakdown-list">
+                                <div class="breakdown-item">
+                                    <div class="item-color" style="background-color: #76B7B2;"></div>
+                                    <div class="item-details">
+                                        <div class="item-name">Software</div>
+                                        <div class="item-value">RM 12,714.00</div>
+                                    </div>
+                                    <div class="item-percentage">30%</div>
+                                </div>
+                                <div class="breakdown-item">
+                                    <div class="item-color" style="background-color: #59A14F;"></div>
+                                    <div class="item-details">
+                                        <div class="item-name">Equipment</div>
+                                        <div class="item-value">RM 10,595.00</div>
+                                    </div>
+                                    <div class="item-percentage">25%</div>
+                                </div>
+                                <div class="breakdown-item">
+                                    <div class="item-color" style="background-color: #EDC948;"></div>
+                                    <div class="item-details">
+                                        <div class="item-name">Office</div>
+                                        <div class="item-value">RM 10,595.00</div>
+                                    </div>
+                                    <div class="item-percentage">25%</div>
+                                </div>
+                                <div class="breakdown-item">
+                                    <div class="item-color" style="background-color: #B07AA1;"></div>
+                                    <div class="item-details">
+                                        <div class="item-name">Other</div>
+                                        <div class="item-value">RM 8,476.00</div>
+                                    </div>
+                                    <div class="item-percentage">20%</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Saved Reports Section -->
+                <div class="saved-reports">
+                    <div class="section-header">
+                        <h3>Recent Reports</h3>
+                        <button class="btn btn-text">View All Reports</button>
+                    </div>
+                    <div class="reports-grid">
+                        <div class="report-card">
+                            <div class="report-card-icon pdf">
+                                <i class="fas fa-file-pdf"></i>
+                            </div>
+                            <div class="report-card-content">
+                                <h4>Annual Income & Expense Report (2025)</h4>
+                                <p>Generated on 15 May 2025</p>
+                                <div class="report-card-actions">
+                                    <button class="btn btn-sm btn-outline">Preview</button>
+                                    <button class="btn btn-sm btn-primary">Download</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="report-card">
+                            <div class="report-card-icon csv">
+                                <i class="fas fa-file-csv"></i>
+                            </div>
+                            <div class="report-card-content">
+                                <h4>Q1 Tax Summary (2025)</h4>
+                                <p>Generated on 02 April 2025</p>
+                                <div class="report-card-actions">
+                                    <button class="btn btn-sm btn-outline">Preview</button>
+                                    <button class="btn btn-sm btn-primary">Download</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="report-card">
+                            <div class="report-card-icon doc">
+                                <i class="fas fa-file-alt"></i>
+                            </div>
+                            <div class="report-card-content">
+                                <h4>Client Revenue Analysis (2024)</h4>
+                                <p>Generated on 10 January 2025</p>
+                                <div class="report-card-actions">
+                                    <button class="btn btn-sm btn-outline">Preview</button>
+                                    <button class="btn btn-sm btn-primary">Download</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal: Create Report -->
+    <div class="modal" id="createReportModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Create New Report</h3>
+                <button class="modal-close"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="report-type">Report Type</label>
+                    <select id="report-type" class="form-control">
+                        <option value="income-expense">Income & Expense Summary</option>
+                        <option value="profit-loss">Profit & Loss Statement</option>
+                        <option value="tax-summary">Tax Summary</option>
+                        <option value="client-analysis">Client Revenue Analysis</option>
+                        <option value="category-breakdown">Category Breakdown</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="report-start-date">Start Date</label>
+                        <input type="date" id="report-start-date" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="report-end-date">End Date</label>
+                        <input type="date" id="report-end-date" class="form-control">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="report-currency">Currency</label>
+                        <select id="report-currency" class="form-control">
+                            <option value="MYR">MYR (Primary)</option>
+                            <option value="USD">USD</option>
+                            <option value="EUR">EUR</option>
+                            <option value="GBP">GBP</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="report-format">Output Format</label>
+                        <select id="report-format" class="form-control">
+                            <option value="pdf">PDF Document</option>
+                            <option value="csv">CSV Spreadsheet</option>
+                            <option value="xlsx">Excel Workbook</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Data to Include</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="include-charts" checked>
+                            <label for="include-charts">Charts & Visualizations</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="include-transactions" checked>
+                            <label for="include-transactions">Transaction List</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="include-categories" checked>
+                            <label for="include-categories">Category Breakdown</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="include-summary" checked>
+                            <label for="include-summary">Executive Summary</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline modal-cancel">Cancel</button>
+                <button class="btn btn-primary modal-save">Generate Report</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script src="js/charts.js"></script>
+</body>
+</html> 

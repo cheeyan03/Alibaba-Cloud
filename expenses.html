@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expenses & Income | Expense Tracker</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="logo">
+                <h1>FinTrack</h1>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="index.html"><i class="fas fa-chart-line"></i> Dashboard</a>
+                </li>
+                <li class="nav-item active">
+                    <a href="expenses.html"><i class="fas fa-receipt"></i> Expenses & Income</a>
+                </li>
+                <li class="nav-item">
+                    <a href="currencies.html"><i class="fas fa-exchange-alt"></i> Currency Tracker</a>
+                </li>
+                <li class="nav-item">
+                    <a href="tax-center.html"><i class="fas fa-file-invoice"></i> Tax Center</a>
+                </li>
+                <li class="nav-item">
+                    <a href="reports.html"><i class="fas fa-chart-pie"></i> Reports</a>
+                </li>
+                <li class="nav-item">
+                    <a href="settings.html"><i class="fas fa-cog"></i> Settings</a>
+                </li>
+            </ul>
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <img src="images/avatar-placeholder.png" alt="User Profile">
+                    <div class="user-info">
+                        <p class="user-name">John Doe</p>
+                        <p class="user-role">Freelancer</p>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <header class="content-header">
+                <div class="page-title">
+                    <h2>Expenses & Income</h2>
+                    <p class="subtitle">Track, categorize, and manage your financial records</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-secondary" id="uploadReceiptBtn"><i class="fas fa-camera"></i> Upload Receipt</button>
+                    <button class="btn btn-primary" id="addTransactionBtn"><i class="fas fa-plus"></i> Add Transaction</button>
+                </div>
+            </header>
+
+            <!-- Expenses and Income Content -->
+            <div class="expenses-content">
+                <!-- Filters and Search -->
+                <div class="card filter-card">
+                    <div class="filter-container">
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" placeholder="Search transactions...">
+                        </div>
+                        <div class="filter-options">
+                            <div class="filter-group">
+                                <label>Type:</label>
+                                <select class="filter-select">
+                                    <option value="all">All</option>
+                                    <option value="income">Income</option>
+                                    <option value="expense">Expense</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label>Category:</label>
+                                <select class="filter-select">
+                                    <option value="all">All Categories</option>
+                                    <option value="software">Software</option>
+                                    <option value="equipment">Equipment</option>
+                                    <option value="travel">Travel</option>
+                                    <option value="office">Office</option>
+                                    <option value="professional">Professional Services</option>
+                                    <option value="utilities">Utilities</option>
+                                    <option value="development">Development</option>
+                                    <option value="design">Design</option>
+                                    <option value="consulting">Consulting</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label>Date:</label>
+                                <select class="filter-select">
+                                    <option value="all">All Time</option>
+                                    <option value="this-month">This Month</option>
+                                    <option value="last-month">Last Month</option>
+                                    <option value="this-quarter">This Quarter</option>
+                                    <option value="last-quarter">Last Quarter</option>
+                                    <option value="this-year">This Year</option>
+                                    <option value="last-year">Last Year</option>
+                                    <option value="custom">Custom Range</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label>Currency:</label>
+                                <select class="filter-select">
+                                    <option value="all">All Currencies</option>
+                                    <option value="myr">MYR</option>
+                                    <option value="usd">USD</option>
+                                    <option value="eur">EUR</option>
+                                    <option value="gbp">GBP</option>
+                                    <option value="sgd">SGD</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-sm">Apply Filters</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Transactions Summary -->
+                <div class="card-grid summary-grid">
+                    <div class="card summary-card">
+                        <div class="card-icon income-icon">
+                            <i class="fas fa-arrow-down"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3 class="card-title">Total Income</h3>
+                            <p class="card-value">RM 45,680.00</p>
+                            <p class="card-period">For selected period</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card summary-card">
+                        <div class="card-icon expense-icon">
+                            <i class="fas fa-arrow-up"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3 class="card-title">Total Expenses</h3>
+                            <p class="card-value">RM 12,450.00</p>
+                            <p class="card-period">For selected period</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card summary-card">
+                        <div class="card-icon receipt-icon">
+                            <i class="fas fa-receipt"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3 class="card-title">Tax Deductibles</h3>
+                            <p class="card-value">RM 8,750.00</p>
+                            <p class="card-period">Potential deductions</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Transactions Table -->
+                <div class="card transactions-table-card">
+                    <div class="card-header">
+                        <h3>Transaction History</h3>
+                        <div class="card-actions">
+                            <button class="btn btn-sm btn-outline"><i class="fas fa-file-export"></i> Export</button>
+                        </div>
+                    </div>
+                    <div class="transactions-table-container">
+                        <table class="transactions-table">
+                            <thead>
+                                <tr>
+                                    <th>Date <i class="fas fa-sort"></i></th>
+                                    <th>Description <i class="fas fa-sort"></i></th>
+                                    <th>Category <i class="fas fa-sort"></i></th>
+                                    <th>Client/Vendor <i class="fas fa-sort"></i></th>
+                                    <th>Amount <i class="fas fa-sort"></i></th>
+                                    <th>Currency</th>
+                                    <th>Tax Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="income-row">
+                                    <td>15 May 2025</td>
+                                    <td>Website Development</td>
+                                    <td>Development</td>
+                                    <td>ABC Corp</td>
+                                    <td class="amount income">+RM 5,200.00</td>
+                                    <td>MYR</td>
+                                    <td><span class="badge badge-taxable">Taxable</span></td>
+                                    <td class="actions-cell">
+                                        <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                        <button class="btn-icon"><i class="fas fa-trash-alt"></i></button>
+                                    </td>
+                                </tr>
+                                <tr class="expense-row">
+                                    <td>12 May 2025</td>
+                                    <td>Adobe Creative Cloud</td>
+                                    <td>Software</td>
+                                    <td>Adobe Inc</td>
+                                    <td class="amount expense">-RM 280.00</td>
+                                    <td>MYR</td>
+                                    <td><span class="badge badge-deductible">Deductible</span></td>
+                                    <td class="actions-cell">
+                                        <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                        <button class="btn-icon"><i class="fas fa-trash-alt"></i></button>
+                                    </td>
+                                </tr>
+                                <tr class="income-row">
+                                    <td>10 May 2025</td>
+                                    <td>Logo Design Project</td>
+                                    <td>Design</td>
+                                    <td>XYZ StartUp</td>
+                                    <td class="amount income">+RM 1,800.00</td>
+                                    <td>MYR</td>
+                                    <td><span class="badge badge-taxable">Taxable</span></td>
+                                    <td class="actions-cell">
+                                        <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                        <button class="btn-icon"><i class="fas fa-trash-alt"></i></button>
+                                    </td>
+                                </tr>
+                                <tr class="expense-row">
+                                    <td>08 May 2025</td>
+                                    <td>Office Supplies</td>
+                                    <td>Equipment</td>
+                                    <td>Office Depot</td>
+                                    <td class="amount expense">-RM 150.00</td>
+                                    <td>MYR</td>
+                                    <td><span class="badge badge-deductible">Deductible</span></td>
+                                    <td class="actions-cell">
+                                        <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                        <button class="btn-icon"><i class="fas fa-trash-alt"></i></button>
+                                    </td>
+                                </tr>
+                                <tr class="expense-row">
+                                    <td>05 May 2025</td>
+                                    <td>Business Networking Event</td>
+                                    <td>Professional</td>
+                                    <td>KL Tech Conference</td>
+                                    <td class="amount expense">-RM 350.00</td>
+                                    <td>MYR</td>
+                                    <td><span class="badge badge-deductible">Deductible</span></td>
+                                    <td class="actions-cell">
+                                        <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                        <button class="btn-icon"><i class="fas fa-trash-alt"></i></button>
+                                    </td>
+                                </tr>
+                                <tr class="income-row">
+                                    <td>01 May 2025</td>
+                                    <td>UI/UX Consulting</td>
+                                    <td>Consulting</td>
+                                    <td>Tech Solutions Inc</td>
+                                    <td class="amount income">+USD 1,200.00</td>
+                                    <td>USD</td>
+                                    <td><span class="badge badge-taxable">Taxable</span></td>
+                                    <td class="actions-cell">
+                                        <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                        <button class="btn-icon"><i class="fas fa-trash-alt"></i></button>
+                                    </td>
+                                </tr>
+                                <tr class="expense-row">
+                                    <td>28 Apr 2025</td>
+                                    <td>Web Hosting (Annual)</td>
+                                    <td>Utilities</td>
+                                    <td>DigitalOcean</td>
+                                    <td class="amount expense">-USD 240.00</td>
+                                    <td>USD</td>
+                                    <td><span class="badge badge-deductible">Deductible</span></td>
+                                    <td class="actions-cell">
+                                        <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                        <button class="btn-icon"><i class="fas fa-trash-alt"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="pagination">
+                        <button class="pagination-btn"><i class="fas fa-chevron-left"></i></button>
+                        <button class="pagination-btn active">1</button>
+                        <button class="pagination-btn">2</button>
+                        <button class="pagination-btn">3</button>
+                        <span class="pagination-ellipsis">...</span>
+                        <button class="pagination-btn">10</button>
+                        <button class="pagination-btn"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal: Add/Edit Transaction -->
+    <div class="modal" id="transactionModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add New Transaction</h3>
+                <button class="modal-close"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Transaction Type</label>
+                    <div class="toggle-group">
+                        <button class="toggle-btn active" data-type="income">Income</button>
+                        <button class="toggle-btn" data-type="expense">Expense</button>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="transaction-date">Date</label>
+                        <input type="date" id="transaction-date" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="transaction-amount">Amount</label>
+                        <input type="number" id="transaction-amount" class="form-control" placeholder="0.00">
+                    </div>
+                    <div class="form-group">
+                        <label for="transaction-currency">Currency</label>
+                        <select id="transaction-currency" class="form-control">
+                            <option value="myr">MYR</option>
+                            <option value="usd">USD</option>
+                            <option value="eur">EUR</option>
+                            <option value="gbp">GBP</option>
+                            <option value="sgd">SGD</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="transaction-description">Description</label>
+                    <input type="text" id="transaction-description" class="form-control" placeholder="Describe this transaction...">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="transaction-category">Category</label>
+                        <select id="transaction-category" class="form-control">
+                            <option value="">Select a category</option>
+                            <option value="software">Software</option>
+                            <option value="equipment">Equipment</option>
+                            <option value="travel">Travel</option>
+                            <option value="office">Office</option>
+                            <option value="professional">Professional Services</option>
+                            <option value="utilities">Utilities</option>
+                            <option value="development">Development</option>
+                            <option value="design">Design</option>
+                            <option value="consulting">Consulting</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="transaction-client-vendor">Client/Vendor</label>
+                        <input type="text" id="transaction-client-vendor" class="form-control" placeholder="Who is this transaction with?">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="transaction-tax-status">Tax Status</label>
+                    <select id="transaction-tax-status" class="form-control">
+                        <option value="taxable">Taxable Income</option>
+                        <option value="deductible">Tax Deductible Expense</option>
+                        <option value="non-deductible">Non-Deductible Expense</option>
+                        <option value="non-taxable">Non-Taxable Income</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="transaction-notes">Notes</label>
+                    <textarea id="transaction-notes" class="form-control" placeholder="Add any additional notes here..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Receipt</label>
+                    <div class="file-upload">
+                        <input type="file" id="transaction-receipt" class="file-input">
+                        <label for="transaction-receipt" class="file-label">
+                            <i class="fas fa-upload"></i> Choose a file or drag it here
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline modal-cancel">Cancel</button>
+                <button class="btn btn-primary modal-save">Save Transaction</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Receipt Scanner -->
+    <div class="modal" id="receiptModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Upload Receipt</h3>
+                <button class="modal-close"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="receipt-upload-area">
+                    <div class="upload-section">
+                        <i class="fas fa-receipt upload-icon"></i>
+                        <h4>Upload a receipt for automatic extraction</h4>
+                        <p>Our AI will scan the receipt and extract the details</p>
+                        <div class="file-upload">
+                            <input type="file" id="receipt-upload" class="file-input" accept="image/*">
+                            <label for="receipt-upload" class="file-label">
+                                <i class="fas fa-upload"></i> Choose a file or take a photo
+                            </label>
+                        </div>
+                    </div>
+                    <div class="preview-section">
+                        <h4>Receipt Preview</h4>
+                        <div class="receipt-preview">
+                            <img id="receipt-preview-img" src="" alt="Receipt preview">
+                        </div>
+                    </div>
+                </div>
+                <div class="receipt-extraction-results">
+                    <h4>Extracted Information</h4>
+                    <div class="extraction-data">
+                        <div class="extraction-item">
+                            <span class="extraction-label">Date:</span>
+                            <span class="extraction-value">-</span>
+                        </div>
+                        <div class="extraction-item">
+                            <span class="extraction-label">Vendor:</span>
+                            <span class="extraction-value">-</span>
+                        </div>
+                        <div class="extraction-item">
+                            <span class="extraction-label">Total Amount:</span>
+                            <span class="extraction-value">-</span>
+                        </div>
+                        <div class="extraction-item">
+                            <span class="extraction-label">Currency:</span>
+                            <span class="extraction-value">-</span>
+                        </div>
+                        <div class="extraction-item">
+                            <span class="extraction-label">Tax Amount:</span>
+                            <span class="extraction-value">-</span>
+                        </div>
+                        <div class="extraction-item">
+                            <span class="extraction-label">Category:</span>
+                            <span class="extraction-value">-</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline modal-cancel">Cancel</button>
+                <button class="btn btn-primary modal-save">Confirm & Save</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html> 

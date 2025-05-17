@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currency Tracker | Expense Tracker</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="logo">
+                <h1>FinTrack</h1>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="index.html"><i class="fas fa-chart-line"></i> Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a href="expenses.html"><i class="fas fa-receipt"></i> Expenses & Income</a>
+                </li>
+                <li class="nav-item active">
+                    <a href="currencies.html"><i class="fas fa-exchange-alt"></i> Currency Tracker</a>
+                </li>
+                <li class="nav-item">
+                    <a href="tax-center.html"><i class="fas fa-file-invoice"></i> Tax Center</a>
+                </li>
+                <li class="nav-item">
+                    <a href="reports.html"><i class="fas fa-chart-pie"></i> Reports</a>
+                </li>
+                <li class="nav-item">
+                    <a href="settings.html"><i class="fas fa-cog"></i> Settings</a>
+                </li>
+            </ul>
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <img src="images/avatar-placeholder.png" alt="User Profile">
+                    <div class="user-info">
+                        <p class="user-name">John Doe</p>
+                        <p class="user-role">Freelancer</p>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <header class="content-header">
+                <div class="page-title">
+                    <h2>Currency Tracker</h2>
+                    <p class="subtitle">Manage and monitor your multi-currency transactions</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-secondary"><i class="fas fa-sync-alt"></i> Update Rates</button>
+                    <button class="btn btn-primary"><i class="fas fa-plus"></i> Add Currency</button>
+                </div>
+            </header>
+
+            <!-- Currency Tracker Content -->
+            <div class="currency-content">
+                <!-- Currency Converter Card -->
+                <div class="card converter-card">
+                    <div class="converter-content">
+                        <div class="converter-title">
+                            <h3>Currency Converter</h3>
+                            <p>Latest rates updated on 15 May 2025, 09:30 AM</p>
+                        </div>
+                        <div class="converter-form">
+                            <div class="currency-input-group">
+                                <div class="amount-input">
+                                    <label for="amount">Amount</label>
+                                    <input type="number" id="amount" class="form-control" value="1000">
+                                </div>
+                                <div class="currency-select">
+                                    <label for="from-currency">From</label>
+                                    <select id="from-currency" class="form-control">
+                                        <option value="USD">USD - US Dollar</option>
+                                        <option value="MYR" selected>MYR - Malaysian Ringgit</option>
+                                        <option value="EUR">EUR - Euro</option>
+                                        <option value="GBP">GBP - British Pound</option>
+                                        <option value="SGD">SGD - Singapore Dollar</option>
+                                    </select>
+                                </div>
+                                <div class="swap-button">
+                                    <button class="btn-icon currency-swap"><i class="fas fa-exchange-alt"></i></button>
+                                </div>
+                                <div class="currency-select">
+                                    <label for="to-currency">To</label>
+                                    <select id="to-currency" class="form-control">
+                                        <option value="USD" selected>USD - US Dollar</option>
+                                        <option value="MYR">MYR - Malaysian Ringgit</option>
+                                        <option value="EUR">EUR - Euro</option>
+                                        <option value="GBP">GBP - British Pound</option>
+                                        <option value="SGD">SGD - Singapore Dollar</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="conversion-result">
+                                <div class="result-card">
+                                    <p class="conversion-value">RM 1,000.00 = $238.10</p>
+                                    <p class="conversion-rate">1 MYR = 0.2381 USD</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Currency Dashboard -->
+                <div class="currency-dashboard">
+                    <div class="card primary-currency-card">
+                        <div class="primary-currency-header">
+                            <div class="currency-flag">
+                                <i class="fas fa-money-bill-wave"></i>
+                            </div>
+                            <div class="currency-details">
+                                <h3>Primary Currency: Malaysian Ringgit (MYR)</h3>
+                                <div class="currency-actions">
+                                    <button class="btn btn-sm btn-outline">Change Primary Currency</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="currency-balances">
+                            <div class="balance-item">
+                                <span class="balance-label">Total Income (MYR)</span>
+                                <span class="balance-value">RM 45,680.00</span>
+                            </div>
+                            <div class="balance-item">
+                                <span class="balance-label">Total Expenses (MYR)</span>
+                                <span class="balance-value">RM 12,450.00</span>
+                            </div>
+                            <div class="balance-item">
+                                <span class="balance-label">Net Balance (MYR)</span>
+                                <span class="balance-value positive">RM 33,230.00</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Currency Cards -->
+                    <div class="card-grid currency-grid">
+                        <div class="card currency-summary-card">
+                            <div class="currency-header">
+                                <div class="currency-icon">
+                                    <span>$</span>
+                                </div>
+                                <div class="currency-code">
+                                    <h3>USD</h3>
+                                    <p>US Dollar</p>
+                                </div>
+                                <div class="currency-rate">
+                                    <p>1 USD = RM 4.20</p>
+                                </div>
+                            </div>
+                            <div class="currency-stats">
+                                <div class="stat-item">
+                                    <span class="stat-label">Income</span>
+                                    <span class="stat-value">$5,200.00</span>
+                                    <span class="stat-equivalent">≈ RM 21,840.00</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Expenses</span>
+                                    <span class="stat-value">$1,350.00</span>
+                                    <span class="stat-equivalent">≈ RM 5,670.00</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Balance</span>
+                                    <span class="stat-value positive">$3,850.00</span>
+                                    <span class="stat-equivalent">≈ RM 16,170.00</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card currency-summary-card">
+                            <div class="currency-header">
+                                <div class="currency-icon">
+                                    <span>€</span>
+                                </div>
+                                <div class="currency-code">
+                                    <h3>EUR</h3>
+                                    <p>Euro</p>
+                                </div>
+                                <div class="currency-rate">
+                                    <p>1 EUR = RM 4.95</p>
+                                </div>
+                            </div>
+                            <div class="currency-stats">
+                                <div class="stat-item">
+                                    <span class="stat-label">Income</span>
+                                    <span class="stat-value">€2,100.00</span>
+                                    <span class="stat-equivalent">≈ RM 10,395.00</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Expenses</span>
+                                    <span class="stat-value">€580.00</span>
+                                    <span class="stat-equivalent">≈ RM 2,871.00</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Balance</span>
+                                    <span class="stat-value positive">€1,520.00</span>
+                                    <span class="stat-equivalent">≈ RM 7,524.00</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card currency-summary-card">
+                            <div class="currency-header">
+                                <div class="currency-icon">
+                                    <span>£</span>
+                                </div>
+                                <div class="currency-code">
+                                    <h3>GBP</h3>
+                                    <p>British Pound</p>
+                                </div>
+                                <div class="currency-rate">
+                                    <p>1 GBP = RM 5.80</p>
+                                </div>
+                            </div>
+                            <div class="currency-stats">
+                                <div class="stat-item">
+                                    <span class="stat-label">Income</span>
+                                    <span class="stat-value">£1,200.00</span>
+                                    <span class="stat-equivalent">≈ RM 6,960.00</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Expenses</span>
+                                    <span class="stat-value">£0.00</span>
+                                    <span class="stat-equivalent">≈ RM 0.00</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Balance</span>
+                                    <span class="stat-value positive">£1,200.00</span>
+                                    <span class="stat-equivalent">≈ RM 6,960.00</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Currency Exchange Rate History -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Exchange Rate History</h3>
+                        <div class="card-actions">
+                            <select class="filter-select">
+                                <option value="USD">USD/MYR</option>
+                                <option value="EUR">EUR/MYR</option>
+                                <option value="GBP">GBP/MYR</option>
+                                <option value="SGD">SGD/MYR</option>
+                            </select>
+                            <select class="filter-select">
+                                <option value="1m">1 Month</option>
+                                <option value="3m">3 Months</option>
+                                <option value="6m" selected>6 Months</option>
+                                <option value="1y">1 Year</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="chart-container exchange-chart">
+                        <div class="line-chart-placeholder">
+                            <div class="line-chart-grid">
+                                <div class="grid-line"></div>
+                                <div class="grid-line"></div>
+                                <div class="grid-line"></div>
+                                <div class="grid-line"></div>
+                            </div>
+                            <div class="line-chart">
+                                <svg width="100%" height="100%" viewBox="0 0 1000 300" preserveAspectRatio="none">
+                                    <path class="chart-line" d="M0,150 Q250,100 500,200 T1000,120" stroke="var(--primary-color)" stroke-width="3" fill="none"></path>
+                                    <path class="chart-area" d="M0,150 Q250,100 500,200 T1000,120 V300 H0 Z" fill="url(#gradient)" opacity="0.2"></path>
+                                    <defs>
+                                        <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                            <stop offset="0%" stop-color="var(--primary-color)" />
+                                            <stop offset="100%" stop-color="transparent" />
+                                        </linearGradient>
+                                    </defs>
+                                </svg>
+                            </div>
+                            <div class="chart-labels">
+                                <span>Dec</span>
+                                <span>Jan</span>
+                                <span>Feb</span>
+                                <span>Mar</span>
+                                <span>Apr</span>
+                                <span>May</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Multi-Currency Transactions -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Recent Multi-Currency Transactions</h3>
+                        <div class="card-actions">
+                            <button class="btn btn-sm btn-text">View All</button>
+                        </div>
+                    </div>
+                    <div class="transactions-table-container">
+                        <table class="transactions-table">
+                            <thead>
+                                <tr>
+                                    <th>Date <i class="fas fa-sort"></i></th>
+                                    <th>Description <i class="fas fa-sort"></i></th>
+                                    <th>Original Amount <i class="fas fa-sort"></i></th>
+                                    <th>Currency</th>
+                                    <th>Exchange Rate</th>
+                                    <th>MYR Value <i class="fas fa-sort"></i></th>
+                                    <th>Type</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="income-row">
+                                    <td>15 May 2025</td>
+                                    <td>UI/UX Design Project</td>
+                                    <td>$2,500.00</td>
+                                    <td>USD</td>
+                                    <td>4.20</td>
+                                    <td>RM 10,500.00</td>
+                                    <td><span class="badge badge-taxable">Income</span></td>
+                                </tr>
+                                <tr class="expense-row">
+                                    <td>10 May 2025</td>
+                                    <td>Adobe Creative Cloud</td>
+                                    <td>$52.99</td>
+                                    <td>USD</td>
+                                    <td>4.18</td>
+                                    <td>RM 221.50</td>
+                                    <td><span class="badge badge-deductible">Expense</span></td>
+                                </tr>
+                                <tr class="income-row">
+                                    <td>05 May 2025</td>
+                                    <td>Web Development</td>
+                                    <td>€1,800.00</td>
+                                    <td>EUR</td>
+                                    <td>4.95</td>
+                                    <td>RM 8,910.00</td>
+                                    <td><span class="badge badge-taxable">Income</span></td>
+                                </tr>
+                                <tr class="expense-row">
+                                    <td>28 Apr 2025</td>
+                                    <td>Digital Ocean Hosting</td>
+                                    <td>$25.00</td>
+                                    <td>USD</td>
+                                    <td>4.22</td>
+                                    <td>RM 105.50</td>
+                                    <td><span class="badge badge-deductible">Expense</span></td>
+                                </tr>
+                                <tr class="income-row">
+                                    <td>20 Apr 2025</td>
+                                    <td>Branding Project</td>
+                                    <td>£1,200.00</td>
+                                    <td>GBP</td>
+                                    <td>5.80</td>
+                                    <td>RM 6,960.00</td>
+                                    <td><span class="badge badge-taxable">Income</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal: Add Currency -->
+    <div class="modal" id="addCurrencyModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add New Currency</h3>
+                <button class="modal-close"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="currency-select">Select Currency</label>
+                    <select id="currency-select" class="form-control">
+                        <option value="">Select a currency...</option>
+                        <option value="AUD">AUD - Australian Dollar</option>
+                        <option value="CAD">CAD - Canadian Dollar</option>
+                        <option value="CHF">CHF - Swiss Franc</option>
+                        <option value="CNY">CNY - Chinese Yuan</option>
+                        <option value="JPY">JPY - Japanese Yen</option>
+                        <option value="NZD">NZD - New Zealand Dollar</option>
+                        <option value="THB">THB - Thai Baht</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="exchange-rate">Current Exchange Rate to MYR</label>
+                    <div class="exchange-rate-input">
+                        <span class="rate-prefix">1</span>
+                        <input type="text" id="currency-code" class="form-control" value="AUD" readonly>
+                        <span class="rate-equals">=</span>
+                        <input type="number" id="exchange-rate" class="form-control" placeholder="0.00">
+                        <span class="rate-suffix">MYR</span>
+                    </div>
+                    <p class="rate-note">You can adjust this rate manually or use "Auto Fetch" to get the latest rate</p>
+                </div>
+                <div class="form-actions">
+                    <button class="btn btn-secondary"><i class="fas fa-sync-alt"></i> Auto Fetch Rate</button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline modal-cancel">Cancel</button>
+                <button class="btn btn-primary modal-save">Add Currency</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html> 

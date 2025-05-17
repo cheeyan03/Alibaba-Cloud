@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings | Expense Tracker</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="logo">
+                <h1>FinTrack</h1>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="index.html"><i class="fas fa-chart-line"></i> Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a href="expenses.html"><i class="fas fa-receipt"></i> Expenses & Income</a>
+                </li>
+                <li class="nav-item">
+                    <a href="currencies.html"><i class="fas fa-exchange-alt"></i> Currency Tracker</a>
+                </li>
+                <li class="nav-item">
+                    <a href="tax-center.html"><i class="fas fa-file-invoice"></i> Tax Center</a>
+                </li>
+                <li class="nav-item">
+                    <a href="reports.html"><i class="fas fa-chart-pie"></i> Reports</a>
+                </li>
+                <li class="nav-item active">
+                    <a href="settings.html"><i class="fas fa-cog"></i> Settings</a>
+                </li>
+            </ul>
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <img src="images/avatar-placeholder.png" alt="User Profile">
+                    <div class="user-info">
+                        <p class="user-name">John Doe</p>
+                        <p class="user-role">Freelancer</p>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <header class="content-header">
+                <div class="page-title">
+                    <h2>Settings</h2>
+                    <p class="subtitle">Customize your experience and manage your account</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-primary" id="saveSettingsBtn"><i class="fas fa-save"></i> Save Changes</button>
+                </div>
+            </header>
+
+            <!-- Settings Content -->
+            <div class="settings-content">
+                <!-- Settings Navigation -->
+                <div class="settings-nav card">
+                    <ul class="settings-menu">
+                        <li class="settings-menu-item active" data-target="account-settings">
+                            <i class="fas fa-user"></i> Account Settings
+                        </li>
+                        <li class="settings-menu-item" data-target="preferences">
+                            <i class="fas fa-sliders-h"></i> Preferences
+                        </li>
+                        <li class="settings-menu-item" data-target="notifications">
+                            <i class="fas fa-bell"></i> Notifications
+                        </li>
+                        <li class="settings-menu-item" data-target="tax-settings">
+                            <i class="fas fa-file-invoice"></i> Tax Settings
+                        </li>
+                        <li class="settings-menu-item" data-target="currency-settings">
+                            <i class="fas fa-coins"></i> Currency Settings
+                        </li>
+                        <li class="settings-menu-item" data-target="data-management">
+                            <i class="fas fa-database"></i> Data Management
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Settings Panels -->
+                <div class="settings-panels">
+                    <!-- Account Settings Panel -->
+                    <div class="settings-panel active" id="account-settings">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>Account Information</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="profile-section">
+                                    <div class="profile-image">
+                                        <img src="images/avatar-placeholder.png" alt="Profile Image">
+                                        <div class="upload-overlay">
+                                            <i class="fas fa-camera"></i>
+                                        </div>
+                                    </div>
+                                    <div class="profile-details">
+                                        <div class="form-group">
+                                            <label for="display-name">Display Name</label>
+                                            <input type="text" id="display-name" class="form-control" value="John Doe">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="user-role">Role/Profession</label>
+                                            <input type="text" id="user-role" class="form-control" value="Freelancer">
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="email">Email Address</label>
+                                    <input type="email" id="email" class="form-control" value="john.doe@example.com">
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="phone">Phone Number</label>
+                                        <input type="tel" id="phone" class="form-control" value="+60123456789">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="language">Language</label>
+                                        <select id="language" class="form-control">
+                                            <option value="en" selected>English</option>
+                                            <option value="ms">Bahasa Malaysia</option>
+                                            <option value="zh">Chinese</option>
+                                            <option value="ta">Tamil</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>Change Password</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label for="current-password">Current Password</label>
+                                    <input type="password" id="current-password" class="form-control">
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="new-password">New Password</label>
+                                        <input type="password" id="new-password" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="confirm-password">Confirm New Password</label>
+                                        <input type="password" id="confirm-password" class="form-control">
+                                    </div>
+                                </div>
+                                <button class="btn btn-secondary">Update Password</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Preferences Panel -->
+                    <div class="settings-panel" id="preferences">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>App Preferences</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <h4>Dark Mode</h4>
+                                        <p>Enable dark mode for the application</p>
+                                    </div>
+                                    <div class="setting-control">
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" id="dark-mode-toggle">
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <h4>Default Dashboard View</h4>
+                                        <p>Choose your preferred time range for dashboard analytics</p>
+                                    </div>
+                                    <div class="setting-control">
+                                        <select class="form-control">
+                                            <option value="monthly" selected>Monthly</option>
+                                            <option value="quarterly">Quarterly</option>
+                                            <option value="yearly">Yearly</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <h4>Date Format</h4>
+                                        <p>Choose your preferred date format</p>
+                                    </div>
+                                    <div class="setting-control">
+                                        <select class="form-control">
+                                            <option value="dd-mm-yyyy" selected>DD-MM-YYYY</option>
+                                            <option value="mm-dd-yyyy">MM-DD-YYYY</option>
+                                            <option value="yyyy-mm-dd">YYYY-MM-DD</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <h4>Auto-save Data</h4>
+                                        <p>Automatically save your data as you work</p>
+                                    </div>
+                                    <div class="setting-control">
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" id="autosave-toggle" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Notifications Panel -->
+                    <div class="settings-panel" id="notifications">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>Notification Settings</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <h4>Email Notifications</h4>
+                                        <p>Receive notifications via email</p>
+                                    </div>
+                                    <div class="setting-control">
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" id="email-notifications" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <h4>Browser Notifications</h4>
+                                        <p>Receive notifications in your browser</p>
+                                    </div>
+                                    <div class="setting-control">
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" id="browser-notifications" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <h4 class="settings-subtitle">Notification Types</h4>
+                                
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <h4>Tax Deadlines</h4>
+                                        <p>Get reminders about upcoming tax filing deadlines</p>
+                                    </div>
+                                    <div class="setting-control">
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" id="tax-reminders" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <h4>Invoice Due Dates</h4>
+                                        <p>Receive reminders about invoice due dates</p>
+                                    </div>
+                                    <div class="setting-control">
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" id="invoice-reminders" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <h4>Expense Reports</h4>
+                                        <p>Get monthly/quarterly expense summary reports</p>
+                                    </div>
+                                    <div class="setting-control">
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" id="report-notifications" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Tax Settings Panel -->
+                    <div class="settings-panel" id="tax-settings">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>Tax Configuration</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label for="tax-id">Tax Identification Number</label>
+                                    <input type="text" id="tax-id" class="form-control" value="MY12345678">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="business-type">Business Type</label>
+                                    <select id="business-type" class="form-control">
+                                        <option value="sole-proprietor" selected>Sole Proprietor</option>
+                                        <option value="partnership">Partnership</option>
+                                        <option value="llp">Limited Liability Partnership</option>
+                                        <option value="sdn-bhd">Sdn. Bhd.</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="fiscal-year">Fiscal Year</label>
+                                    <select id="fiscal-year" class="form-control">
+                                        <option value="calendar" selected>Calendar Year (Jan-Dec)</option>
+                                        <option value="custom">Custom Fiscal Year</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="tax-threshold">Income Tax Threshold (RM)</label>
+                                    <input type="number" id="tax-threshold" class="form-control" value="50000">
+                                </div>
+                                
+                                <h4 class="settings-subtitle">Default Tax Categories</h4>
+                                
+                                <div class="tax-category-list">
+                                    <div class="tax-category-item">
+                                        <div class="category-info">
+                                            <span>Software Subscriptions</span>
+                                        </div>
+                                        <div class="category-status">
+                                            <span class="badge badge-deductible">Deductible</span>
+                                        </div>
+                                        <div class="category-actions">
+                                            <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="tax-category-item">
+                                        <div class="category-info">
+                                            <span>Office Equipment</span>
+                                        </div>
+                                        <div class="category-status">
+                                            <span class="badge badge-deductible">Deductible</span>
+                                        </div>
+                                        <div class="category-actions">
+                                            <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="tax-category-item">
+                                        <div class="category-info">
+                                            <span>Professional Development</span>
+                                        </div>
+                                        <div class="category-status">
+                                            <span class="badge badge-deductible">Deductible</span>
+                                        </div>
+                                        <div class="category-actions">
+                                            <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <button class="btn btn-sm"><i class="fas fa-plus"></i> Add Tax Category</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Currency Settings Panel -->
+                    <div class="settings-panel" id="currency-settings">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>Currency Settings</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label for="primary-currency">Primary Currency</label>
+                                    <select id="primary-currency" class="form-control">
+                                        <option value="myr" selected>Malaysian Ringgit (MYR)</option>
+                                        <option value="usd">US Dollar (USD)</option>
+                                        <option value="sgd">Singapore Dollar (SGD)</option>
+                                        <option value="gbp">British Pound (GBP)</option>
+                                        <option value="eur">Euro (EUR)</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="exchange-provider">Exchange Rate Provider</label>
+                                    <select id="exchange-provider" class="form-control">
+                                        <option value="auto" selected>Automatic (Free API)</option>
+                                        <option value="manual">Manual Entry</option>
+                                        <option value="premium">Premium API (Paid)</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="update-frequency">Exchange Rate Update Frequency</label>
+                                    <select id="update-frequency" class="form-control">
+                                        <option value="daily" selected>Daily</option>
+                                        <option value="weekly">Weekly</option>
+                                        <option value="monthly">Monthly</option>
+                                    </select>
+                                </div>
+                                
+                                <h4 class="settings-subtitle">Active Currencies</h4>
+                                
+                                <div class="checkbox-group">
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="currency-myr" checked>
+                                        <label for="currency-myr">Malaysian Ringgit (MYR)</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="currency-usd" checked>
+                                        <label for="currency-usd">US Dollar (USD)</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="currency-sgd" checked>
+                                        <label for="currency-sgd">Singapore Dollar (SGD)</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="currency-gbp" checked>
+                                        <label for="currency-gbp">British Pound (GBP)</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="currency-eur" checked>
+                                        <label for="currency-eur">Euro (EUR)</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="currency-aud">
+                                        <label for="currency-aud">Australian Dollar (AUD)</label>
+                                    </div>
+                                    <div class="checkbox-item">
+                                        <input type="checkbox" id="currency-jpy">
+                                        <label for="currency-jpy">Japanese Yen (JPY)</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Data Management Panel -->
+                    <div class="settings-panel" id="data-management">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>Data & Storage</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="storage-info">
+                                    <div class="storage-meter">
+                                        <div class="progress-bar">
+                                            <div class="progress" style="width: 35%;"></div>
+                                        </div>
+                                        <div class="storage-text">
+                                            <span>30.5 MB used of 100 MB</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="data-actions">
+                                    <button class="btn btn-secondary"><i class="fas fa-file-export"></i> Export All Data</button>
+                                    <button class="btn btn-secondary"><i class="fas fa-file-import"></i> Import Data</button>
+                                </div>
+                                
+                                <h4 class="settings-subtitle">Data Management</h4>
+                                
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <h4>Auto Backup</h4>
+                                        <p>Automatically back up your data weekly</p>
+                                    </div>
+                                    <div class="setting-control">
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" id="auto-backup" checked>
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div class="setting-item danger-zone">
+                                    <div class="setting-info">
+                                        <h4>Delete All Data</h4>
+                                        <p>This will permanently remove all your data</p>
+                                    </div>
+                                    <div class="setting-control">
+                                        <button class="btn btn-danger"><i class="fas fa-trash-alt"></i> Delete All Data</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="js/app.js"></script>
+</body>
+</html> 

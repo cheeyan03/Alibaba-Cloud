@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tax Center | Expense Tracker</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="logo">
+                <h1>FinTrack</h1>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="index.html"><i class="fas fa-chart-line"></i> Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a href="expenses.html"><i class="fas fa-receipt"></i> Expenses & Income</a>
+                </li>
+                <li class="nav-item">
+                    <a href="currencies.html"><i class="fas fa-exchange-alt"></i> Currency Tracker</a>
+                </li>
+                <li class="nav-item active">
+                    <a href="tax-center.html"><i class="fas fa-file-invoice"></i> Tax Center</a>
+                </li>
+                <li class="nav-item">
+                    <a href="reports.html"><i class="fas fa-chart-pie"></i> Reports</a>
+                </li>
+                <li class="nav-item">
+                    <a href="settings.html"><i class="fas fa-cog"></i> Settings</a>
+                </li>
+            </ul>
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <img src="images/avatar-placeholder.png" alt="User Profile">
+                    <div class="user-info">
+                        <p class="user-name">John Doe</p>
+                        <p class="user-role">Freelancer</p>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <header class="content-header">
+                <div class="page-title">
+                    <h2>Tax Center</h2>
+                    <p class="subtitle">Manage your taxes efficiently with our AI-powered suggestions</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-secondary"><i class="fas fa-question-circle"></i> Tax Help</button>
+                    <button class="btn btn-primary"><i class="fas fa-file-pdf"></i> Generate Tax Form</button>
+                </div>
+            </header>
+
+            <!-- Tax Center Content -->
+            <div class="tax-center-content">
+                <!-- Tax Filing Status -->
+                <div class="card tax-status-card">
+                    <div class="tax-status-content">
+                        <div class="tax-year-selector">
+                            <label for="tax-year">Tax Year:</label>
+                            <select id="tax-year" class="form-control">
+                                <option value="2025">2025</option>
+                                <option value="2024">2024</option>
+                                <option value="2023">2023</option>
+                            </select>
+                        </div>
+                        <div class="tax-status-info">
+                            <div class="card-icon tax-icon">
+                                <i class="fas fa-file-invoice-dollar"></i>
+                            </div>
+                            <div class="tax-status-details">
+                                <h3>2025 Tax Filing</h3>
+                                <div class="tax-deadline">
+                                    <p><i class="fas fa-calendar-alt"></i> Filing Deadline: April 30, 2025</p>
+                                    <p class="countdown">(15 days remaining)</p>
+                                </div>
+                                <div class="tax-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress" style="width: 65%;"></div>
+                                    </div>
+                                    <p class="progress-text">65% Complete</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tax-amount-summary">
+                            <div class="tax-amount-item">
+                                <span class="tax-label">Estimated Income</span>
+                                <span class="tax-value">RM 125,680.00</span>
+                            </div>
+                            <div class="tax-amount-item">
+                                <span class="tax-label">Potential Deductions</span>
+                                <span class="tax-value">RM 24,350.00</span>
+                            </div>
+                            <div class="tax-amount-item highlight">
+                                <span class="tax-label">Estimated Tax Due</span>
+                                <span class="tax-value">RM 15,225.00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tax Categories -->
+                <div class="tax-categories">
+                    <div class="card category-card">
+                        <div class="card-header">
+                            <h3>Income Summary</h3>
+                        </div>
+                        <div class="category-content">
+                            <div class="category-summary">
+                                <div class="chart-container pie-chart-container">
+                                    <canvas id="taxIncomePieChart"></canvas>
+                                </div>
+                                <div class="category-legend">
+                                    <div class="legend-item">
+                                        <div class="legend-color" style="background-color: var(--primary-color);"></div>
+                                        <div class="legend-text">
+                                            <span class="legend-label">Development</span>
+                                            <span class="legend-value">RM 85,400.00</span>
+                                        </div>
+                                    </div>
+                                    <div class="legend-item">
+                                        <div class="legend-color" style="background-color: var(--info);"></div>
+                                        <div class="legend-text">
+                                            <span class="legend-label">Design</span>
+                                            <span class="legend-value">RM 22,680.00</span>
+                                        </div>
+                                    </div>
+                                    <div class="legend-item">
+                                        <div class="legend-color" style="background-color: var(--success);"></div>
+                                        <div class="legend-text">
+                                            <span class="legend-label">Consulting</span>
+                                            <span class="legend-value">RM 17,600.00</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card category-card">
+                        <div class="card-header">
+                            <h3>Tax Deduction Summary</h3>
+                        </div>
+                        <div class="category-content">
+                            <div class="category-summary">
+                                <div class="chart-container pie-chart-container">
+                                    <canvas id="taxDeductionPieChart"></canvas>
+                                </div>
+                                <div class="category-legend">
+                                    <div class="legend-item">
+                                        <div class="legend-color" style="background-color: var(--primary-light);"></div>
+                                        <div class="legend-text">
+                                            <span class="legend-label">Equipment</span>
+                                            <span class="legend-value">RM 8,250.00</span>
+                                        </div>
+                                    </div>
+                                    <div class="legend-item">
+                                        <div class="legend-color" style="background-color: var(--success);"></div>
+                                        <div class="legend-text">
+                                            <span class="legend-label">Home Office</span>
+                                            <span class="legend-value">RM 6,100.00</span>
+                                        </div>
+                                    </div>
+                                    <div class="legend-item">
+                                        <div class="legend-color" style="background-color: var(--warning);"></div>
+                                        <div class="legend-text">
+                                            <span class="legend-label">Software</span>
+                                            <span class="legend-value">RM 5,400.00</span>
+                                        </div>
+                                    </div>
+                                    <div class="legend-item">
+                                        <div class="legend-color" style="background-color: var(--info);"></div>
+                                        <div class="legend-text">
+                                            <span class="legend-label">Training</span>
+                                            <span class="legend-value">RM 4,600.00</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tax Deduction Suggestions -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3>AI-Powered Tax Deduction Suggestions</h3>
+                        <div class="card-actions">
+                            <button class="btn btn-sm btn-outline"><i class="fas fa-sync"></i> Refresh</button>
+                        </div>
+                    </div>
+                    <div class="tax-suggestions">
+                        <div class="suggestion-item">
+                            <div class="suggestion-icon high">
+                                <i class="fas fa-lightbulb"></i>
+                            </div>
+                            <div class="suggestion-content">
+                                <h4>Increase Home Office Deduction</h4>
+                                <p>Based on your work patterns, you might be eligible for a higher home office deduction. Consider claiming 25% of your home utility bills.</p>
+                                <div class="suggestion-impact">
+                                    <span class="impact-label">Potential Savings:</span>
+                                    <span class="impact-value">+RM 1,850.00</span>
+                                </div>
+                            </div>
+                            <div class="suggestion-action">
+                                <button class="btn btn-primary btn-sm">Apply</button>
+                            </div>
+                        </div>
+                        
+                        <div class="suggestion-item">
+                            <div class="suggestion-icon medium">
+                                <i class="fas fa-lightbulb"></i>
+                            </div>
+                            <div class="suggestion-content">
+                                <h4>Training & Professional Development</h4>
+                                <p>Your recent course payments qualify as professional development expenses. Add them to your tax deductions.</p>
+                                <div class="suggestion-impact">
+                                    <span class="impact-label">Potential Savings:</span>
+                                    <span class="impact-value">+RM 950.00</span>
+                                </div>
+                            </div>
+                            <div class="suggestion-action">
+                                <button class="btn btn-primary btn-sm">Apply</button>
+                            </div>
+                        </div>
+                        
+                        <div class="suggestion-item">
+                            <div class="suggestion-icon medium">
+                                <i class="fas fa-lightbulb"></i>
+                            </div>
+                            <div class="suggestion-content">
+                                <h4>Business Travel Deductions</h4>
+                                <p>Some of your travel expenses appear business-related but are not categorized for tax deductions. Review and recategorize them.</p>
+                                <div class="suggestion-impact">
+                                    <span class="impact-label">Potential Savings:</span>
+                                    <span class="impact-value">+RM 720.00</span>
+                                </div>
+                            </div>
+                            <div class="suggestion-action">
+                                <button class="btn btn-primary btn-sm">Apply</button>
+                            </div>
+                        </div>
+                        
+                        <div class="suggestion-item">
+                            <div class="suggestion-icon low">
+                                <i class="fas fa-lightbulb"></i>
+                            </div>
+                            <div class="suggestion-content">
+                                <h4>Missing Receipt Alert</h4>
+                                <p>You have 3 transactions marked as deductible but missing receipt documentation. Upload receipts to strengthen your tax claims.</p>
+                                <div class="suggestion-impact">
+                                    <span class="impact-label">Documentation:</span>
+                                    <span class="impact-value">3 items</span>
+                                </div>
+                            </div>
+                            <div class="suggestion-action">
+                                <button class="btn btn-primary btn-sm">Review</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tax Forms & Resources -->
+                <div class="card-grid tax-resources-grid">
+                    <div class="card resource-card">
+                        <div class="resource-icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <div class="resource-content">
+                            <h3>Tax Form BE</h3>
+                            <p>For Malaysian resident individuals without business income</p>
+                            <div class="resource-actions">
+                                <button class="btn btn-sm">Preview</button>
+                                <button class="btn btn-sm btn-primary">Generate</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card resource-card">
+                        <div class="resource-icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <div class="resource-content">
+                            <h3>Tax Form B</h3>
+                            <p>For Malaysian resident individuals with business income</p>
+                            <div class="resource-actions">
+                                <button class="btn btn-sm">Preview</button>
+                                <button class="btn btn-sm btn-primary">Generate</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card resource-card">
+                        <div class="resource-icon">
+                            <i class="fas fa-calculator"></i>
+                        </div>
+                        <div class="resource-content">
+                            <h3>Tax Calculator</h3>
+                            <p>Estimate your annual tax liability with our calculator</p>
+                            <div class="resource-actions">
+                                <button class="btn btn-sm btn-primary">Calculate</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card resource-card">
+                        <div class="resource-icon">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <div class="resource-content">
+                            <h3>Tax Guide</h3>
+                            <p>Comprehensive guide for freelancers in Malaysia</p>
+                            <div class="resource-actions">
+                                <button class="btn btn-sm btn-primary">View Guide</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Recent Tax Activity -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Recent Tax Activity</h3>
+                    </div>
+                    <div class="activity-list">
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="activity-content">
+                                <h4>New Deduction Added</h4>
+                                <p>Added "Adobe Creative Cloud" as a business expense</p>
+                                <span class="activity-time">Today, 10:25 AM</span>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="fas fa-file-pdf"></i>
+                            </div>
+                            <div class="activity-content">
+                                <h4>Tax Form Generated</h4>
+                                <p>Generated and downloaded draft Tax Form B</p>
+                                <span class="activity-time">Yesterday, 3:15 PM</span>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="fas fa-receipt"></i>
+                            </div>
+                            <div class="activity-content">
+                                <h4>Receipt Uploaded</h4>
+                                <p>Added receipt for "Business Development Conference"</p>
+                                <span class="activity-time">April 12, 2025</span>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="fas fa-calculator"></i>
+                            </div>
+                            <div class="activity-content">
+                                <h4>Tax Calculation</h4>
+                                <p>Updated tax estimation based on Q1 2025 income</p>
+                                <span class="activity-time">April 10, 2025</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal: Tax Form Generator -->
+    <div class="modal" id="taxFormModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Generate Tax Form</h3>
+                <button class="modal-close"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="form-type">Form Type</label>
+                    <select id="form-type" class="form-control">
+                        <option value="form-b">Form B (with business income)</option>
+                        <option value="form-be">Form BE (without business income)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="tax-year-form">Assessment Year</label>
+                    <select id="tax-year-form" class="form-control">
+                        <option value="2025">2025</option>
+                        <option value="2024">2024</option>
+                        <option value="2023">2023</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Data to Include</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="include-income" checked>
+                            <label for="include-income">Income Data</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="include-expenses" checked>
+                            <label for="include-expenses">Business Expenses</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="include-personal" checked>
+                            <label for="include-personal">Personal Relief</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="include-tax" checked>
+                            <label for="include-tax">Tax Payments</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="form-format">Output Format</label>
+                    <select id="form-format" class="form-control">
+                        <option value="pdf">PDF Document</option>
+                        <option value="prefilled">Pre-filled Form</option>
+                        <option value="ezhasil">e-Filing Ready Format</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline modal-cancel">Cancel</button>
+                <button class="btn btn-primary modal-save">Generate Form</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script src="js/charts.js"></script>
+</body>
+</html> 

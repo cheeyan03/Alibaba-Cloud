@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker & Tax Filing Assistant</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="logo">
+                <h1>FinTrack</h1>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item active">
+                    <a href="index.html"><i class="fas fa-chart-line"></i> Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a href="expenses.html"><i class="fas fa-receipt"></i> Expenses & Income</a>
+                </li>
+                <li class="nav-item">
+                    <a href="currencies.html"><i class="fas fa-exchange-alt"></i> Currency Tracker</a>
+                </li>
+                <li class="nav-item">
+                    <a href="tax-center.html"><i class="fas fa-file-invoice"></i> Tax Center</a>
+                </li>
+                <li class="nav-item">
+                    <a href="reports.html"><i class="fas fa-chart-pie"></i> Reports</a>
+                </li>
+                <li class="nav-item">
+                    <a href="settings.html"><i class="fas fa-cog"></i> Settings</a>
+                </li>
+            </ul>
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <img src="images/avatar-placeholder.png" alt="User Profile">
+                    <div class="user-info">
+                        <p class="user-name">John Doe</p>
+                        <p class="user-role">Freelancer</p>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <header class="content-header">
+                <div class="page-title">
+                    <h2>Dashboard</h2>
+                    <p class="subtitle">Financial overview for freelancing activities</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-primary"><i class="fas fa-plus"></i> Add Expense</button>
+                    <div class="notification-icon">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge">3</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard Content -->
+            <div class="dashboard-content">
+                <!-- Financial Summary Cards -->
+                <div class="card-grid">
+                    <div class="dashboard-summary-card">
+                        <div class="card-icon income-icon">
+                            <i class="fas fa-arrow-down"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3 class="card-title">Total Income</h3>
+                            <p class="card-value">RM 45,680.00</p>
+                            <p class="card-change positive">+12% from last month</p>
+                        </div>
+                    </div>
+                    
+                    <div class="dashboard-summary-card">
+                        <div class="card-icon expense-icon">
+                            <i class="fas fa-arrow-up"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3 class="card-title">Total Expenses</h3>
+                            <p class="card-value">RM 12,450.00</p>
+                            <p class="card-change negative">+8% from last month</p>
+                        </div>
+                    </div>
+                    
+                    <div class="dashboard-summary-card">
+                        <div class="card-icon savings-icon">
+                            <i class="fas fa-piggy-bank"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3 class="card-title">Net Savings</h3>
+                            <p class="card-value">RM 33,230.00</p>
+                            <p class="card-change positive">+15% from last month</p>
+                        </div>
+                    </div>
+                    
+                    <div class="dashboard-summary-card">
+                        <div class="card-icon tax-icon">
+                            <i class="fas fa-file-invoice-dollar"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3 class="card-title">Est. Tax Due</h3>
+                            <p class="card-value">RM 5,325.00</p>
+                            <div class="tax-deadline">
+                                <span>Due: 30 April 2025</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Charts & Reports Section -->
+                <div class="dashboard-row">
+                    <div class="card chart-card">
+                        <div class="card-header">
+                            <h3>Income vs Expenses</h3>
+                            <div class="card-actions">
+                                <select class="time-range-selector">
+                                    <option value="monthly">Monthly</option>
+                                    <option value="quarterly">Quarterly</option>
+                                    <option value="yearly">Yearly</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <!-- Placeholder for chart -->
+                            <div class="chart-placeholder">
+                                <div class="placeholder-bars">
+                                    <div class="bar-group">
+                                        <div class="bar income-bar" style="height: 85%"></div>
+                                        <div class="bar expense-bar" style="height: 35%"></div>
+                                    </div>
+                                    <div class="bar-group">
+                                        <div class="bar income-bar" style="height: 65%"></div>
+                                        <div class="bar expense-bar" style="height: 25%"></div>
+                                    </div>
+                                    <div class="bar-group">
+                                        <div class="bar income-bar" style="height: 90%"></div>
+                                        <div class="bar expense-bar" style="height: 40%"></div>
+                                    </div>
+                                    <div class="bar-group">
+                                        <div class="bar income-bar" style="height: 75%"></div>
+                                        <div class="bar expense-bar" style="height: 30%"></div>
+                                    </div>
+                                    <div class="bar-group">
+                                        <div class="bar income-bar" style="height: 95%"></div>
+                                        <div class="bar expense-bar" style="height: 45%"></div>
+                                    </div>
+                                    <div class="bar-group">
+                                        <div class="bar income-bar" style="height: 70%"></div>
+                                        <div class="bar expense-bar" style="height: 25%"></div>
+                                    </div>
+                                </div>
+                                <div class="chart-legend">
+                                    <div class="legend-item">
+                                        <div class="legend-color income-color"></div>
+                                        <span>Income</span>
+                                    </div>
+                                    <div class="legend-item">
+                                        <div class="legend-color expense-color"></div>
+                                        <span>Expenses</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Tax Deduction Opportunities</h3>
+                            <div class="card-actions">
+                                <a href="tax-center.html" class="btn btn-text">View All</a>
+                            </div>
+                        </div>
+                        <div class="deduction-list">
+                            <div class="deduction-item">
+                                <div class="deduction-icon">
+                                    <i class="fas fa-laptop"></i>
+                                </div>
+                                <div class="deduction-details">
+                                    <h4>Equipment & Supplies</h4>
+                                    <p>RM 3,200.00 in potential deductions</p>
+                                </div>
+                                <div class="deduction-status">
+                                    <span class="status-badge highlight">High Impact</span>
+                                </div>
+                            </div>
+                            <div class="deduction-item">
+                                <div class="deduction-icon">
+                                    <i class="fas fa-home"></i>
+                                </div>
+                                <div class="deduction-details">
+                                    <h4>Home Office</h4>
+                                    <p>RM 1,800.00 in potential deductions</p>
+                                </div>
+                                <div class="deduction-status">
+                                    <span class="status-badge">Medium Impact</span>
+                                </div>
+                            </div>
+                            <div class="deduction-item">
+                                <div class="deduction-icon">
+                                    <i class="fas fa-briefcase"></i>
+                                </div>
+                                <div class="deduction-details">
+                                    <h4>Professional Development</h4>
+                                    <p>RM 950.00 in potential deductions</p>
+                                </div>
+                                <div class="deduction-status">
+                                    <span class="status-badge">Medium Impact</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Recent Transactions Section -->
+                <div class="card transactions-card">
+                    <div class="card-header">
+                        <h3>Recent Transactions</h3>
+                        <div class="card-actions">
+                            <a href="expenses.html" class="btn btn-text">View All</a>
+                        </div>
+                    </div>
+                    <div class="transactions-list">
+                        <div class="transaction-item">
+                            <div class="transaction-details">
+                                <div class="transaction-icon income">
+                                    <i class="fas fa-arrow-down"></i>
+                                </div>
+                                <div class="transaction-info">
+                                    <h4>Website Development</h4>
+                                    <p class="transaction-client">Client: ABC Corp</p>
+                                </div>
+                            </div>
+                            <div class="transaction-meta">
+                                <div class="transaction-amount income">+ RM 5,200.00</div>
+                                <div class="transaction-date">15 May 2025</div>
+                            </div>
+                        </div>
+                        <div class="transaction-item">
+                            <div class="transaction-details">
+                                <div class="transaction-icon expense">
+                                    <i class="fas fa-arrow-up"></i>
+                                </div>
+                                <div class="transaction-info">
+                                    <h4>Adobe Creative Cloud</h4>
+                                    <p class="transaction-category">Category: Software</p>
+                                </div>
+                            </div>
+                            <div class="transaction-meta">
+                                <div class="transaction-amount expense">- RM 280.00</div>
+                                <div class="transaction-date">12 May 2025</div>
+                            </div>
+                        </div>
+                        <div class="transaction-item">
+                            <div class="transaction-details">
+                                <div class="transaction-icon income">
+                                    <i class="fas fa-arrow-down"></i>
+                                </div>
+                                <div class="transaction-info">
+                                    <h4>Logo Design Project</h4>
+                                    <p class="transaction-client">Client: XYZ StartUp</p>
+                                </div>
+                            </div>
+                            <div class="transaction-meta">
+                                <div class="transaction-amount income">+ RM 1,800.00</div>
+                                <div class="transaction-date">10 May 2025</div>
+                            </div>
+                        </div>
+                        <div class="transaction-item">
+                            <div class="transaction-details">
+                                <div class="transaction-icon expense">
+                                    <i class="fas fa-arrow-up"></i>
+                                </div>
+                                <div class="transaction-info">
+                                    <h4>Office Supplies</h4>
+                                    <p class="transaction-category">Category: Equipment</p>
+                                </div>
+                            </div>
+                            <div class="transaction-meta">
+                                <div class="transaction-amount expense">- RM 150.00</div>
+                                <div class="transaction-date">08 May 2025</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Tax Calendar & Reminders -->
+                <div class="card reminder-card">
+                    <div class="card-header">
+                        <h3>Tax Calendar & Reminders</h3>
+                        <div class="card-actions">
+                            <button class="btn btn-text">Add Reminder</button>
+                        </div>
+                    </div>
+                    <div class="reminder-list">
+                        <div class="reminder-item urgent">
+                            <div class="reminder-icon">
+                                <i class="fas fa-exclamation-circle"></i>
+                            </div>
+                            <div class="reminder-details">
+                                <h4>Income Tax Filing Due</h4>
+                                <p>30 Apr 2025 (15 days remaining)</p>
+                            </div>
+                            <div class="reminder-actions">
+                                <button class="btn btn-sm">Prepare Now</button>
+                            </div>
+                        </div>
+                        <div class="reminder-item">
+                            <div class="reminder-icon">
+                                <i class="fas fa-file-invoice"></i>
+                            </div>
+                            <div class="reminder-details">
+                                <h4>Quarterly Tax Estimate</h4>
+                                <p>30 Jun 2025 (45 days remaining)</p>
+                            </div>
+                            <div class="reminder-actions">
+                                <button class="btn btn-sm btn-outline">Review</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html> 
