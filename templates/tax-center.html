@@ -111,87 +111,10 @@
                 </div>
 
                 <!-- Tax Categories -->
-                <div class="tax-categories">
-                    <div class="card category-card">
-                        <div class="card-header">
-                            <h3>Income Summary</h3>
-                        </div>
-                        <div class="category-content">
-                            <div class="category-summary">
-                                <div class="chart-container pie-chart-container">
-                                    <canvas id="taxIncomePieChart"></canvas>
-                                </div>
-                                <div class="category-legend">
-                                    <div class="legend-item">
-                                        <div class="legend-color" style="background-color: var(--primary-color);"></div>
-                                        <div class="legend-text">
-                                            <span class="legend-label">Development</span>
-                                            <span class="legend-value">RM {{ "{:,.2f}".format(income_summary.development) }}</span>
-                                        </div>
-                                    </div>
-                                    <div class="legend-item">
-                                        <div class="legend-color" style="background-color: var(--info);"></div>
-                                        <div class="legend-text">
-                                            <span class="legend-label">Design</span>
-                                            <span class="legend-value">RM {{ "{:,.2f}".format(income_summary.design) }}</span>
-                                        </div>
-                                    </div>
-                                    <div class="legend-item">
-                                        <div class="legend-color" style="background-color: var(--success);"></div>
-                                        <div class="legend-text">
-                                            <span class="legend-label">Consulting</span>
-                                            <span class="legend-value">RM {{ "{:,.2f}".format(income_summary.consulting) }}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="card category-card">
-                        <div class="card-header">
-                            <h3>Tax Deduction Summary</h3>
-                        </div>
-                        <div class="category-content">
-                            <div class="category-summary">
-                                <div class="chart-container pie-chart-container">
-                                    <canvas id="taxDeductionPieChart"></canvas>
-                                </div>
-                                <div class="category-legend">
-                                    <div class="legend-item">
-                                        <div class="legend-color" style="background-color: var(--primary-light);"></div>
-                                        <div class="legend-text">
-                                            <span class="legend-label">Equipment</span>
-                                            <span class="legend-value">RM {{ "{:,.2f}".format(deduction_summary.equipment) }}</span>
-                                        </div>
-                                    </div>
-                                    <div class="legend-item">
-                                        <div class="legend-color" style="background-color: var(--success);"></div>
-                                        <div class="legend-text">
-                                            <span class="legend-label">Home Office</span>
-                                            <span class="legend-value">RM {{ "{:,.2f}".format(deduction_summary.home_office) }}</span>
-                                        </div>
-                                    </div>
-                                    <div class="legend-item">
-                                        <div class="legend-color" style="background-color: var(--warning);"></div>
-                                        <div class="legend-text">
-                                            <span class="legend-label">Software</span>
-                                            <span class="legend-value">RM {{ "{:,.2f}".format(deduction_summary.software) }}</span>
-                                        </div>
-                                    </div>
-                                    <div class="legend-item">
-                                        <div class="legend-color" style="background-color: var(--info);"></div>
-                                        <div class="legend-text">
-                                            <span class="legend-label">Training</span>
-                                            <span class="legend-value">RM {{ "{:,.2f}".format(deduction_summary.training) }}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="iframe-container">
+                    <iframe src="https://bi.aliyuncs.com/t/Mj2i2i" frameborder="0" width="100%" height="600px"></iframe>
                 </div>
-
+            
                 <!-- Tax Deduction Suggestions -->
                 <div class="card">
                     <div class="card-header">
