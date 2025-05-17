@@ -345,31 +345,47 @@
                     <h4>Extracted Information</h4>
                     <div class="extraction-data">
                         <div class="extraction-item">
-                            <span class="extraction-label">Date:</span>
-                            <span class="extraction-value" id="extracted-date">-</span>
+                            <label class="extraction-label" for="extracted-date">Date:</label>
+                            <input type="text" class="extraction-value" id="extracted-date" name="date" />
                         </div>
                         <div class="extraction-item">
-                            <span class="extraction-label">Vendor:</span>
-                            <span class="extraction-value" id="extracted-vendor">-</span>
+                            <label class="extraction-label" for="extracted-vendor">Vendor:</label>
+                            <input type="text" class="extraction-value" id="extracted-vendor" name="vendor" />
                         </div>
                         <div class="extraction-item">
-                            <span class="extraction-label">Total Amount:</span>
-                            <span class="extraction-value" id="extracted-total">-</span>
+                            <label class="extraction-label" for="extracted-total">Total Amount:</label>
+                            <input type="number" step="0.01" class="extraction-value" id="extracted-total" name="total" />
                         </div>
                         <div class="extraction-item">
-                            <span class="extraction-label">Currency:</span>
-                            <span class="extraction-value" id="extracted-currency">-</span>
+                            <label class="extraction-label" for="extracted-currency">Currency:</label>
+                            <select class="extraction-value" id="extracted-currency" name="currency">
+                                <option value="">-</option>
+                                <option value="MYR">MYR</option>
+                                <option value="USD">USD</option>
+                                <option value="SGD">SGD</option>
+                                <option value="EUR">EUR</option>
+                            </select>
                         </div>
                         <div class="extraction-item">
-                            <span class="extraction-label">Tax Amount:</span>
-                            <span class="extraction-value" id="extracted-tax">-</span>
+                            <label class="extraction-label" for="extracted-type">Type:</label>
+                            <select class="extraction-value" id="extracted-type" name="type">
+                                <option value="">-</option>
+                                <option value="Income">Income</option>
+                                <option value="Expense">Expense</option>
+                            </select>
                         </div>
                         <div class="extraction-item">
-                            <span class="extraction-label">Category:</span>
-                            <span class="extraction-value" id="extracted-category">-</span>
+                            <label class="extraction-label" for="extracted-category">Category:</label>
+                            <select class="extraction-value" id="extracted-category" name="category">
+                                <option value="">-</option>
+                                {% for category in categories %}
+                                    <option value="{{ category.id }}">{{ category.name }}</option>
+                                {% endfor %}
+                            </select>
                         </div>                        
                     </div>
                 </div>
+                
             </div>
             <div class="modal-footer">
                 <button class="btn btn-outline modal-cancel">Cancel</button>

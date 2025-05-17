@@ -1552,13 +1552,13 @@ document.getElementById("receipt-upload").addEventListener("change", async funct
                 const d = extractData.data;
                 receiptInfo = { ...d, image_url: imageUrl }; // Save for later use
 
-                // Inject values into modal
-                document.getElementById("extracted-date").textContent = d.Date || "-";
-                document.getElementById("extracted-vendor").textContent = d.Vendor || "-";
-                document.getElementById("extracted-total").textContent = d["Total Amount"] || "-";
-                document.getElementById("extracted-currency").textContent = d.Currency || "-";
-                document.getElementById("extracted-tax").textContent = d["Tax Amount"] || "-";
-                document.getElementById("extracted-category").textContent = d.Category || "-";
+                document.getElementById("extracted-date").value = d.Date || "";
+                document.getElementById("extracted-vendor").value = d.Vendor || "";
+                document.getElementById("extracted-total").value = d["Total Amount"] || "";
+                document.getElementById("extracted-currency").value = d.Currency || "";
+                document.getElementById("extracted-type").value = d.Type || "";
+                document.getElementById("extracted-category").value = d.Category || "";
+
             } else {
                 alert("Failed to extract receipt info.");
             }

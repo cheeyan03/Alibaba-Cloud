@@ -704,7 +704,7 @@ def expenses():
             'pagination': expenses_data['pagination']
         })
     
-    return render_template("expenses.html", **expenses_data)
+    return render_template("expenses.html", **expenses_data, categories = list_categories())
 
 @app.route("/currencies")
 def currencies():
