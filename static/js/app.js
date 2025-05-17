@@ -1501,3 +1501,50 @@ function saveTaxEstimates(year, estimates) {
     
     alert(`Tax estimates for ${year} have been saved.`);
 } 
+
+document.getElementById("receipt-upload").addEventListener("change", async function(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+        const response = await fetch("/upload-receipt", {
+            method: "POST",
+            body: formData
+        });
+
+        const result = await response.json();
+        const previewImg = document.getElementById("receipt-preview-img");
+        const downloadLink = document.getElementById("receipt-download-link");
+
+        // Hide previous previews
+        previewImg.style.display = "none";
+        downloadLink.style.display = "none";
+        downloadLink.href = "";
+        downloadLink.textContent = "";
+
+        if (result.success) {
+            if (file.type.startsWith("image/")) {
+                previewImg.src = result.url;
+                previewImg.style.display = "block";
+            } else if (file.type === "application/pdf") {
+                downloadLink.href = result.url;
+                downloadLink.textContent = "📄 Download uploaded PDF";
+                downloadLink.style.display = "inline-block";
+            } else {
+                alert("Unsupported file type for preview.");
+            }
+
+            console.log("Uploaded to:", result.url);
+        } else {
+            alert("Upload failed: " + (result.error || "Unknown error"));
+        }
+    } catch (err) {
+        alert("Error uploading file");
+        console.error(err);
+    }
+});
+
+
