@@ -1502,7 +1502,9 @@ function saveTaxEstimates(year, estimates) {
     alert(`Tax estimates for ${year} have been saved.`);
 } 
 
-document.getElementById("receipt-upload").addEventListener("change", async function(event) {
+let receiptInfo = {};  // Store image URL + parsed data here
+
+document.getElementById("receipt-upload").addEventListener("change", async function (event) {
     const file = event.target.files[0];
     if (!file) return;
 
@@ -1512,7 +1514,7 @@ document.getElementById("receipt-upload").addEventListener("change", async funct
     try {
         const response = await fetch("/upload-receipt", {
             method: "POST",
-            body: formData
+            body: formData,
         });
 
         const result = await response.json();
@@ -1526,6 +1528,9 @@ document.getElementById("receipt-upload").addEventListener("change", async funct
         downloadLink.textContent = "";
 
         if (result.success) {
+            const imageUrl = result.url;
+
+            // Show preview
             if (file.type.startsWith("image/")) {
                 previewImg.src = result.url;
                 previewImg.style.display = "block";
@@ -1533,11 +1538,30 @@ document.getElementById("receipt-upload").addEventListener("change", async funct
                 downloadLink.href = result.url;
                 downloadLink.textContent = "📄 Download uploaded PDF";
                 downloadLink.style.display = "inline-block";
-            } else {
-                alert("Unsupported file type for preview.");
             }
 
-            console.log("Uploaded to:", result.url);
+            // Call backend to extract info
+            const extractRes = await fetch("/extract-receipt-data", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ image_url: imageUrl }),
+            });
+
+            const extractData = await extractRes.json();
+            if (extractData.success) {
+                const d = extractData.data;
+                receiptInfo = { ...d, image_url: imageUrl }; // Save for later use
+
+                // Inject values into modal
+                document.getElementById("extracted-date").textContent = d.Date || "-";
+                document.getElementById("extracted-vendor").textContent = d.Vendor || "-";
+                document.getElementById("extracted-total").textContent = d["Total Amount"] || "-";
+                document.getElementById("extracted-currency").textContent = d.Currency || "-";
+                document.getElementById("extracted-tax").textContent = d["Tax Amount"] || "-";
+                document.getElementById("extracted-category").textContent = d.Category || "-";
+            } else {
+                alert("Failed to extract receipt info.");
+            }
         } else {
             alert("Upload failed: " + (result.error || "Unknown error"));
         }

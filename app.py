@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, jsonify
 from werkzeug.utils import secure_filename
 from oss_manage_file import upload_to_oss  # function to upload to OSS
+from llm import parse_receipt_with_qwen  # function to parse receipt with Qwen
 
 
 app = Flask(
@@ -50,6 +51,16 @@ def upload_receipt():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+@app.route("/extract-receipt-data", methods=["POST"])
+def extract_receipt_data():
+    data = request.get_json()
+    image_url = data.get("image_url")
+    if not image_url:
+        return jsonify({"success": False, "error": "Missing image_url"}), 400
+
+    result = parse_receipt_with_qwen(image_url)
+
+    return jsonify({"success": True, "data": result})
 
 
 if __name__ == "__main__":
