@@ -1,68 +1,95 @@
-# FinTrack - Expense Tracker & Tax Filing Assistant
+# 🧾 FinTrack — Expense Tracker & Tax Filing Assistant
 
-A modern, user-friendly application designed to help freelancers in Malaysia manage their expenses and tax filing efficiently.
+FinTrack is a modern, user-friendly web application tailored for freelancers and small business owners in Malaysia. It simplifies **expense tracking**, **income management**, and **tax filing**, all in one place — with smart features like OCR-based receipt extraction and AI-assisted tax suggestions.
 
-## Features
+---
 
-- **Dashboard** - Get a comprehensive overview of your financial health
-- **Expenses & Income Management** - Track, categorize, and manage financial records
-- **Receipt OCR** - Upload receipts for automatic data extraction using OCR technology
-- **Currency Tracker** - Manage and monitor multi-currency transactions with real-time conversion rates
-- **Tax Center** - Get AI-powered tax deduction suggestions and generate tax forms
-- **Reports** - Generate financial summaries for tax filing and business analysis
+## 🚀 Overview
 
-## Technology Stack
+This project helps users:
 
-- **Frontend**: HTML, CSS, JavaScript
-- **Design**: Linear-inspired modern UI
-- **Data Visualization**: Custom CSS charts (with potential for Chart.js integration)
+* Upload receipts and auto-extract data using OCR
+* Categorize transactions (Income / Expense)
+* Monitor multi-currency finances
+* Track deductible items for tax purposes
+* Export reports for submission or analysis
 
-## Getting Started
+---
 
-1. Clone the repository
-2. Open `index.html` in your browser to view the application
-3. No server setup required for the basic UI demo
+## ✨ Features
 
-## Project Structure
+* 📊 **Dashboard** — Snapshot of financial health
+* 🧾 **Expenses & Income** — Add, filter, and view transaction history
+* 🧠 **Receipt Scanner** — Upload image/PDF and auto-extract vendor, amount, date, etc.
+* 💹 **Currency Tracker** — Convert and manage foreign currency transactions
+* 📑 **Tax Center** — Suggest deductible expenses, view tax status per transaction
+* 📈 **Reports** — Export financial summaries
+
+---
+
+## 🛠️ Technology Stack
+
+* **Backend**: Python (Flask)
+* **Frontend**: HTML, CSS, JavaScript
+* **Database**: ApsaraDB RDS for MySQL
+* **OCR & AI**: Qwen LLMs from Model Studio
+* **Visualization**: QuickBI
+* **File Upload & Management**: Alibaba Cloud Object Storage Service (OSS)
+
+---
+
+## 🧰 Project Structure (Key Files)
 
 ```
-fintrack/
-├── css/
-│   └── styles.css
-├── js/
-│   └── app.js
-├── images/
-├── index.html      # Dashboard
-├── expenses.html   # Expenses & Income
-├── currencies.html # Currency Tracker
-├── tax-center.html # Tax Center
-└── README.md
+.
+├── app.py                     # Main Flask application
+├── llm.py                     # Qwen LLM logic for parsing
+├── oss_manage_file.py         # Upload to Alibaba Cloud OSS
+├── templates/                 # HTML templates (Jinja2)
+├── static/                    # CSS, JS, images
+├── requirements.txt           # Python dependencies
+└── .env / example.env         # Environment variables
 ```
 
-## Features Currently Implemented (UI Only)
+---
 
-- Dashboard overview with financial summary cards
-- Expense entry form with category tagging
-- Receipt upload interface with OCR preview
-- Multi-currency transaction tracking
-- Currency converter
-- Tax deduction suggestions interface
-- Tax form generation (UI only)
+## ⚙️ Setup Instructions
 
-## Future Implementation
+1. **Clone the repository**
 
-- Backend integration with Node.js/Express or Firebase
-- User authentication and data persistence
-- Real API integration for currency exchange rates
-- Actual OCR processing for receipt scanning
-- PDF generation for tax forms
-- Mobile-responsive enhancements
+```bash
+git clone https://github.com/cheeyan03/Alibaba-Cloud.git
+cd Alibaba-Cloud
+```
 
-## License
+2. **Create and activate a virtual environment**
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+```bash
+python3 -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
 
-## Contact
+3. **Install dependencies**
 
-For any questions, please contact:
-- Email: support@fintrack.example.com 
+```bash
+pip install -r requirements.txt
+```
+
+4. **Configure environment variables**
+
+Rename the example file and fill in your own secrets:
+
+```bash
+cp example.env .env
+# Edit .env to insert your OSS keys, DB credentials, etc.
+```
+
+5. **Run the app**
+
+```bash
+python app.py
+```
+
+Access it on: [http://127.0.0.1:5000](http://127.0.0.1:5000)
+
+---
