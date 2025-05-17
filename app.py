@@ -678,6 +678,91 @@ def get_settings_data():
         }
     }
 
+def get_tax_summary_data():
+    today = datetime.now()
+    deadline = datetime(2025, 4, 30)
+    days_remaining = (deadline - today).days
+
+    return {
+        "user": {
+            "name": "John Doe",
+            "role": "Freelancer",
+            "avatar": "images/avatar-placeholder.png"
+        },
+        "tax_data": {
+            "year": "2025",
+            "last_updated": "15 May 2025",
+            "total_income": 126450.00,
+            "total_deductions": 24350.00,
+            "taxable_income": 102100.00,
+            "estimated_tax": 15225.00,
+            "deadline": "April 30, 2025",
+            "days_remaining": days_remaining,
+            "completion_percentage": 65,
+            "deductions": [
+                {
+                    "name": "Equipment & Supplies",
+                    "description": "Computer equipment, office supplies, and software subscriptions",
+                    "amount": 8250.00
+                },
+                {
+                    "name": "Home Office",
+                    "description": "Portion of rent, utilities, and internet expenses",
+                    "amount": 6100.00
+                },
+                {
+                    "name": "Software & Services",
+                    "description": "Professional software licenses and cloud services",
+                    "amount": 5400.00
+                },
+                {
+                    "name": "Professional Development",
+                    "description": "Online courses and training materials",
+                    "amount": 4600.00
+                }
+            ],
+            "requirements": [
+                {
+                    "name": "Income Documentation",
+                    "description": "All income statements and invoices for the tax year",
+                    "completed": True
+                },
+                {
+                    "name": "Expense Receipts",
+                    "description": "Receipts for all claimed deductions",
+                    "completed": True
+                },
+                {
+                    "name": "Bank Statements",
+                    "description": "Statements showing business transactions",
+                    "completed": False
+                },
+                {
+                    "name": "Previous Tax Returns",
+                    "description": "Last year's tax return for reference",
+                    "completed": True
+                }
+            ],
+            "advisory_items": [
+                {
+                    "title": "Missing Documentation",
+                    "description": "Upload your bank statements to complete your documentation requirements.",
+                    "icon": "fa-exclamation-triangle"
+                },
+                {
+                    "title": "Deduction Opportunity",
+                    "description": "You may be eligible for additional home office deductions based on your work patterns.",
+                    "icon": "fa-lightbulb"
+                },
+                {
+                    "title": "Tax Savings Tip",
+                    "description": "Consider contributing to your EPF to maximize your tax relief for retirement savings.",
+                    "icon": "fa-piggy-bank"
+                }
+            ]
+        }
+    }
+
 # map each page to a route
 @app.route("/")
 def home():
@@ -734,6 +819,34 @@ def settings():
     settings_data = get_settings_data()
     return render_template("settings.html", **settings_data)
 
+@app.route("/tax-summary")
+def tax_summary():
+    tax_summary_data = get_tax_summary_data()
+    return render_template("tax-summary.html", **tax_summary_data)
+
+@app.route("/export-tax-summary")
+def export_tax_summary():
+    format = request.args.get('format', 'pdf')
+    tax_data = get_tax_summary_data()
+
+    if format == 'pdf':
+        # Here you would generate a PDF using a library like reportlab or WeasyPrint
+        # For now, we'll return a dummy response
+        return Response(
+            "PDF content here",
+            mimetype='application/pdf',
+            headers={'Content-Disposition': f'attachment;filename=tax_summary_{datetime.now().year}.pdf'}
+        )
+    elif format in ['excel', 'csv']:
+        # Here you would generate Excel/CSV using a library like pandas or openpyxl
+        return jsonify({
+            "success": True,
+            "message": f"Export to {format.upper()} completed successfully"
+        })
+    else:
+        return jsonify({
+            "error": "Unsupported export format"
+        }), 400
 
 @app.route("/upload-receipt", methods=["POST"])
 def upload_receipt():
