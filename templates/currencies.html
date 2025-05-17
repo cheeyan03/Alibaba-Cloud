@@ -66,7 +66,7 @@
                     <div class="converter-content">
                         <div class="converter-title">
                             <h3>Currency Converter</h3>
-                            <p>Latest rates updated on 15 May 2025, 09:30 AM</p>
+                            <p>Latest rates updated on {{ last_update }}</p>
                         </div>
                         <div class="converter-form">
                             <div class="currency-input-group">
@@ -116,7 +116,7 @@
                                 <i class="fas fa-money-bill-wave"></i>
                             </div>
                             <div class="currency-details">
-                                <h3>Primary Currency: Malaysian Ringgit (MYR)</h3>
+                                <h3>Primary Currency: {{ primary_currency.name }} ({{ primary_currency.code }})</h3>
                                 <div class="currency-actions">
                                     <button class="btn btn-sm btn-outline">Change Primary Currency</button>
                                 </div>
@@ -124,117 +124,55 @@
                         </div>
                         <div class="currency-balances">
                             <div class="balance-item">
-                                <span class="balance-label">Total Income (MYR)</span>
-                                <span class="balance-value">RM 45,680.00</span>
+                                <span class="balance-label">Total Income ({{ primary_currency.code }})</span>
+                                <span class="balance-value">{{ primary_currency.code }} {{ "{:,.2f}".format(primary_currency.income) }}</span>
                             </div>
                             <div class="balance-item">
-                                <span class="balance-label">Total Expenses (MYR)</span>
-                                <span class="balance-value">RM 12,450.00</span>
+                                <span class="balance-label">Total Expenses ({{ primary_currency.code }})</span>
+                                <span class="balance-value">{{ primary_currency.code }} {{ "{:,.2f}".format(primary_currency.expenses) }}</span>
                             </div>
                             <div class="balance-item">
-                                <span class="balance-label">Net Balance (MYR)</span>
-                                <span class="balance-value positive">RM 33,230.00</span>
+                                <span class="balance-label">Net Balance ({{ primary_currency.code }})</span>
+                                <span class="balance-value positive">{{ primary_currency.code }} {{ "{:,.2f}".format(primary_currency.balance) }}</span>
                             </div>
                         </div>
                     </div>
 
                     <!-- Currency Cards -->
                     <div class="card-grid currency-grid">
+                        {% for currency in currencies %}
                         <div class="card currency-summary-card">
                             <div class="currency-header">
                                 <div class="currency-icon">
-                                    <span>$</span>
+                                    <span>{{ currency.symbol }}</span>
                                 </div>
                                 <div class="currency-code">
-                                    <h3>USD</h3>
-                                    <p>US Dollar</p>
+                                    <h3>{{ currency.code }}</h3>
+                                    <p>{{ currency.name }}</p>
                                 </div>
                                 <div class="currency-rate">
-                                    <p>1 USD = RM 4.20</p>
+                                    <p>1 {{ currency.code }} = {{ primary_currency.code }} {{ "{:.2f}".format(currency.rate) }}</p>
                                 </div>
                             </div>
                             <div class="currency-stats">
                                 <div class="stat-item">
                                     <span class="stat-label">Income</span>
-                                    <span class="stat-value">$5,200.00</span>
-                                    <span class="stat-equivalent">≈ RM 21,840.00</span>
+                                    <span class="stat-value">{{ currency.symbol }}{{ "{:,.2f}".format(currency.income) }}</span>
+                                    <span class="stat-equivalent">≈ {{ primary_currency.code }} {{ "{:,.2f}".format(currency.income * currency.rate) }}</span>
                                 </div>
                                 <div class="stat-item">
                                     <span class="stat-label">Expenses</span>
-                                    <span class="stat-value">$1,350.00</span>
-                                    <span class="stat-equivalent">≈ RM 5,670.00</span>
+                                    <span class="stat-value">{{ currency.symbol }}{{ "{:,.2f}".format(currency.expenses) }}</span>
+                                    <span class="stat-equivalent">≈ {{ primary_currency.code }} {{ "{:,.2f}".format(currency.expenses * currency.rate) }}</span>
                                 </div>
                                 <div class="stat-item">
                                     <span class="stat-label">Balance</span>
-                                    <span class="stat-value positive">$3,850.00</span>
-                                    <span class="stat-equivalent">≈ RM 16,170.00</span>
+                                    <span class="stat-value positive">{{ currency.symbol }}{{ "{:,.2f}".format(currency.balance) }}</span>
+                                    <span class="stat-equivalent">≈ {{ primary_currency.code }} {{ "{:,.2f}".format(currency.balance * currency.rate) }}</span>
                                 </div>
                             </div>
                         </div>
-
-                        <div class="card currency-summary-card">
-                            <div class="currency-header">
-                                <div class="currency-icon">
-                                    <span>€</span>
-                                </div>
-                                <div class="currency-code">
-                                    <h3>EUR</h3>
-                                    <p>Euro</p>
-                                </div>
-                                <div class="currency-rate">
-                                    <p>1 EUR = RM 4.95</p>
-                                </div>
-                            </div>
-                            <div class="currency-stats">
-                                <div class="stat-item">
-                                    <span class="stat-label">Income</span>
-                                    <span class="stat-value">€2,100.00</span>
-                                    <span class="stat-equivalent">≈ RM 10,395.00</span>
-                                </div>
-                                <div class="stat-item">
-                                    <span class="stat-label">Expenses</span>
-                                    <span class="stat-value">€580.00</span>
-                                    <span class="stat-equivalent">≈ RM 2,871.00</span>
-                                </div>
-                                <div class="stat-item">
-                                    <span class="stat-label">Balance</span>
-                                    <span class="stat-value positive">€1,520.00</span>
-                                    <span class="stat-equivalent">≈ RM 7,524.00</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="card currency-summary-card">
-                            <div class="currency-header">
-                                <div class="currency-icon">
-                                    <span>£</span>
-                                </div>
-                                <div class="currency-code">
-                                    <h3>GBP</h3>
-                                    <p>British Pound</p>
-                                </div>
-                                <div class="currency-rate">
-                                    <p>1 GBP = RM 5.80</p>
-                                </div>
-                            </div>
-                            <div class="currency-stats">
-                                <div class="stat-item">
-                                    <span class="stat-label">Income</span>
-                                    <span class="stat-value">£1,200.00</span>
-                                    <span class="stat-equivalent">≈ RM 6,960.00</span>
-                                </div>
-                                <div class="stat-item">
-                                    <span class="stat-label">Expenses</span>
-                                    <span class="stat-value">£0.00</span>
-                                    <span class="stat-equivalent">≈ RM 0.00</span>
-                                </div>
-                                <div class="stat-item">
-                                    <span class="stat-label">Balance</span>
-                                    <span class="stat-value positive">£1,200.00</span>
-                                    <span class="stat-equivalent">≈ RM 6,960.00</span>
-                                </div>
-                            </div>
-                        </div>
+                        {% endfor %}
                     </div>
                 </div>
 
@@ -306,56 +244,22 @@
                                     <th>Original Amount <i class="fas fa-sort"></i></th>
                                     <th>Currency</th>
                                     <th>Exchange Rate</th>
-                                    <th>MYR Value <i class="fas fa-sort"></i></th>
+                                    <th>{{ primary_currency.code }} Value <i class="fas fa-sort"></i></th>
                                     <th>Type</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr class="income-row">
-                                    <td>15 May 2025</td>
-                                    <td>UI/UX Design Project</td>
-                                    <td>$2,500.00</td>
-                                    <td>USD</td>
-                                    <td>4.20</td>
-                                    <td>RM 10,500.00</td>
-                                    <td><span class="badge badge-taxable">Income</span></td>
+                                {% for transaction in recent_transactions %}
+                                <tr class="{{ transaction.type }}-row">
+                                    <td>{{ transaction.date }}</td>
+                                    <td>{{ transaction.description }}</td>
+                                    <td>{{ transaction.currency }} {{ "{:,.2f}".format(transaction.amount) }}</td>
+                                    <td>{{ transaction.currency }}</td>
+                                    <td>{{ "{:.2f}".format(transaction.rate) }}</td>
+                                    <td>{{ primary_currency.code }} {{ "{:,.2f}".format(transaction.myr_value) }}</td>
+                                    <td><span class="badge badge-{{ transaction.type }}">{{ transaction.type|title }}</span></td>
                                 </tr>
-                                <tr class="expense-row">
-                                    <td>10 May 2025</td>
-                                    <td>Adobe Creative Cloud</td>
-                                    <td>$52.99</td>
-                                    <td>USD</td>
-                                    <td>4.18</td>
-                                    <td>RM 221.50</td>
-                                    <td><span class="badge badge-deductible">Expense</span></td>
-                                </tr>
-                                <tr class="income-row">
-                                    <td>05 May 2025</td>
-                                    <td>Web Development</td>
-                                    <td>€1,800.00</td>
-                                    <td>EUR</td>
-                                    <td>4.95</td>
-                                    <td>RM 8,910.00</td>
-                                    <td><span class="badge badge-taxable">Income</span></td>
-                                </tr>
-                                <tr class="expense-row">
-                                    <td>28 Apr 2025</td>
-                                    <td>Digital Ocean Hosting</td>
-                                    <td>$25.00</td>
-                                    <td>USD</td>
-                                    <td>4.22</td>
-                                    <td>RM 105.50</td>
-                                    <td><span class="badge badge-deductible">Expense</span></td>
-                                </tr>
-                                <tr class="income-row">
-                                    <td>20 Apr 2025</td>
-                                    <td>Branding Project</td>
-                                    <td>£1,200.00</td>
-                                    <td>GBP</td>
-                                    <td>5.80</td>
-                                    <td>RM 6,960.00</td>
-                                    <td><span class="badge badge-taxable">Income</span></td>
-                                </tr>
+                                {% endfor %}
                             </tbody>
                         </table>
                     </div>

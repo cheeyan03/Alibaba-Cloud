@@ -78,13 +78,9 @@
                         <label>Date Range:</label>
                         <div class="date-picker">
                             <select id="date-preset">
-                                <option value="this-month">This Month</option>
-                                <option value="last-month">Last Month</option>
-                                <option value="this-quarter">This Quarter</option>
-                                <option value="last-quarter">Last Quarter</option>
-                                <option value="this-year" selected>This Year</option>
-                                <option value="last-year">Last Year</option>
-                                <option value="custom">Custom Range</option>
+                                {% for range in date_ranges.options %}
+                                <option value="{{ range.value }}" {% if range.selected %}selected{% endif %}>{{ range.label }}</option>
+                                {% endfor %}
                             </select>
                             <div class="custom-date-inputs">
                                 <input type="date" id="start-date" placeholder="Start Date">
@@ -126,8 +122,8 @@
                             </div>
                             <div class="card-content">
                                 <h3 class="card-title">Total Income</h3>
-                                <p class="card-value">RM 126,450.00</p>
-                                <p class="card-period">Jan - Dec 2025</p>
+                                <p class="card-value">{{ summary.income.currency }} {{ "{:,.2f}".format(summary.income.total) }}</p>
+                                <p class="card-period">{{ summary.income.period }}</p>
                             </div>
                         </div>
                 
@@ -138,8 +134,8 @@
                             </div>
                             <div class="card-content">
                                 <h3 class="card-title">Total Expenses</h3>
-                                <p class="card-value">RM 42,380.00</p>
-                                <p class="card-period">Jan - Dec 2025</p>
+                                <p class="card-value">{{ summary.expenses.currency }} {{ "{:,.2f}".format(summary.expenses.total) }}</p>
+                                <p class="card-period">{{ summary.expenses.period }}</p>
                             </div>
                         </div>
                 
@@ -150,8 +146,8 @@
                             </div>
                             <div class="card-content">
                                 <h3 class="card-title">Net Profit</h3>
-                                <p class="card-value">RM 84,070.00</p>
-                                <p class="card-period">Jan - Dec 2025</p>
+                                <p class="card-value">{{ summary.profit.currency }} {{ "{:,.2f}".format(summary.profit.total) }}</p>
+                                <p class="card-period">{{ summary.profit.period }}</p>
                             </div>
                         </div>
                     </div>
@@ -181,30 +177,16 @@
                                 <canvas id="incomePieChart"></canvas>
                             </div>
                             <div class="breakdown-list">
+                                {% for item in income_distribution %}
                                 <div class="breakdown-item">
                                     <div class="item-color" style="background-color: #4E79A7;"></div>
                                     <div class="item-details">
-                                        <div class="item-name">Development</div>
-                                        <div class="item-value">RM 75,870.00</div>
+                                        <div class="item-name">{{ item.category }}</div>
+                                        <div class="item-value">RM {{ "{:,.2f}".format(item.amount) }}</div>
                                     </div>
-                                    <div class="item-percentage">60%</div>
+                                    <div class="item-percentage">{{ item.percentage }}%</div>
                                 </div>
-                                <div class="breakdown-item">
-                                    <div class="item-color" style="background-color: #F28E2B;"></div>
-                                    <div class="item-details">
-                                        <div class="item-name">Design</div>
-                                        <div class="item-value">RM 30,348.00</div>
-                                    </div>
-                                    <div class="item-percentage">24%</div>
-                                </div>
-                                <div class="breakdown-item">
-                                    <div class="item-color" style="background-color: #E15759;"></div>
-                                    <div class="item-details">
-                                        <div class="item-name">Consulting</div>
-                                        <div class="item-value">RM 20,232.00</div>
-                                    </div>
-                                    <div class="item-percentage">16%</div>
-                                </div>
+                                {% endfor %}
                             </div>
                         </div>
                     </div>
@@ -218,38 +200,16 @@
                                 <canvas id="expensePieChart"></canvas>
                             </div>
                             <div class="breakdown-list">
+                                {% for item in expense_distribution %}
                                 <div class="breakdown-item">
                                     <div class="item-color" style="background-color: #76B7B2;"></div>
                                     <div class="item-details">
-                                        <div class="item-name">Software</div>
-                                        <div class="item-value">RM 12,714.00</div>
+                                        <div class="item-name">{{ item.category }}</div>
+                                        <div class="item-value">RM {{ "{:,.2f}".format(item.amount) }}</div>
                                     </div>
-                                    <div class="item-percentage">30%</div>
+                                    <div class="item-percentage">{{ item.percentage }}%</div>
                                 </div>
-                                <div class="breakdown-item">
-                                    <div class="item-color" style="background-color: #59A14F;"></div>
-                                    <div class="item-details">
-                                        <div class="item-name">Equipment</div>
-                                        <div class="item-value">RM 10,595.00</div>
-                                    </div>
-                                    <div class="item-percentage">25%</div>
-                                </div>
-                                <div class="breakdown-item">
-                                    <div class="item-color" style="background-color: #EDC948;"></div>
-                                    <div class="item-details">
-                                        <div class="item-name">Office</div>
-                                        <div class="item-value">RM 10,595.00</div>
-                                    </div>
-                                    <div class="item-percentage">25%</div>
-                                </div>
-                                <div class="breakdown-item">
-                                    <div class="item-color" style="background-color: #B07AA1;"></div>
-                                    <div class="item-details">
-                                        <div class="item-name">Other</div>
-                                        <div class="item-value">RM 8,476.00</div>
-                                    </div>
-                                    <div class="item-percentage">20%</div>
-                                </div>
+                                {% endfor %}
                             </div>
                         </div>
                     </div>
@@ -262,47 +222,21 @@
                         <button class="btn btn-text">View All Reports</button>
                     </div>
                     <div class="reports-grid">
+                        {% for report in recent_reports %}
                         <div class="report-card">
-                            <div class="report-card-icon pdf">
-                                <i class="fas fa-file-pdf"></i>
+                            <div class="report-card-icon {{ report.type }}">
+                                <i class="fas fa-file-{{ report.type }}"></i>
                             </div>
                             <div class="report-card-content">
-                                <h4>Annual Income & Expense Report (2025)</h4>
-                                <p>Generated on 15 May 2025</p>
+                                <h4>{{ report.title }}</h4>
+                                <p>Generated on {{ report.date }}</p>
                                 <div class="report-card-actions">
                                     <button class="btn btn-sm btn-outline">Preview</button>
                                     <button class="btn btn-sm btn-primary">Download</button>
                                 </div>
                             </div>
                         </div>
-
-                        <div class="report-card">
-                            <div class="report-card-icon csv">
-                                <i class="fas fa-file-csv"></i>
-                            </div>
-                            <div class="report-card-content">
-                                <h4>Q1 Tax Summary (2025)</h4>
-                                <p>Generated on 02 April 2025</p>
-                                <div class="report-card-actions">
-                                    <button class="btn btn-sm btn-outline">Preview</button>
-                                    <button class="btn btn-sm btn-primary">Download</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="report-card">
-                            <div class="report-card-icon doc">
-                                <i class="fas fa-file-alt"></i>
-                            </div>
-                            <div class="report-card-content">
-                                <h4>Client Revenue Analysis (2024)</h4>
-                                <p>Generated on 10 January 2025</p>
-                                <div class="report-card-actions">
-                                    <button class="btn btn-sm btn-outline">Preview</button>
-                                    <button class="btn btn-sm btn-primary">Download</button>
-                                </div>
-                            </div>
-                        </div>
+                        {% endfor %}
                     </div>
                 </div>
             </div>

@@ -279,6 +279,351 @@ def get_expenses_data():
         "pagination": pagination
     }
 
+def get_tax_center_data():
+    return {
+        "user": {
+            "name": "John Doe",
+            "role": "Freelancer",
+            "avatar": "images/avatar-placeholder.png"
+        },
+        "tax_year": {
+            "current": "2025",
+            "options": ["2025", "2024", "2023"]
+        },
+        "filing_status": {
+            "deadline": "April 30, 2025",
+            "days_remaining": 15,
+            "completion": 65,
+            "estimated_income": 125680.00,
+            "potential_deductions": 24350.00,
+            "estimated_tax": 15225.00
+        },
+        "income_summary": {
+            "development": 85400.00,
+            "design": 22680.00,
+            "consulting": 17600.00
+        },
+        "deduction_summary": {
+            "equipment": 8250.00,
+            "home_office": 6100.00,
+            "software": 5400.00,
+            "training": 4600.00
+        },
+        "suggestions": [
+            {
+                "title": "Increase Home Office Deduction",
+                "description": "Based on your work patterns, you might be eligible for a higher home office deduction. Consider claiming 25% of your home utility bills.",
+                "impact": 1850.00,
+                "priority": "high"
+            },
+            {
+                "title": "Training & Professional Development",
+                "description": "Your recent course payments qualify as professional development expenses. Add them to your tax deductions.",
+                "impact": 950.00,
+                "priority": "medium"
+            },
+            {
+                "title": "Business Travel Deductions",
+                "description": "Some of your travel expenses appear business-related but are not categorized for tax deductions. Review and recategorize them.",
+                "impact": 720.00,
+                "priority": "medium"
+            },
+            {
+                "title": "Missing Receipt Alert",
+                "description": "You have 3 transactions marked as deductible but missing receipt documentation. Upload receipts to strengthen your tax claims.",
+                "impact": None,
+                "items": 3,
+                "priority": "low"
+            }
+        ],
+        "recent_activity": [
+            {
+                "type": "check",
+                "title": "New Deduction Added",
+                "description": "Added \"Adobe Creative Cloud\" as a business expense",
+                "time": "Today, 10:25 AM"
+            },
+            {
+                "type": "file",
+                "title": "Tax Form Generated",
+                "description": "Generated and downloaded draft Tax Form B",
+                "time": "Yesterday, 3:15 PM"
+            },
+            {
+                "type": "receipt",
+                "title": "Receipt Uploaded",
+                "description": "Added receipt for \"Business Development Conference\"",
+                "time": "April 12, 2025"
+            },
+            {
+                "type": "calculator",
+                "title": "Tax Calculation",
+                "description": "Updated tax estimation based on Q1 2025 income",
+                "time": "April 10, 2025"
+            }
+        ]
+    }
+
+def get_reports_data():
+    return {
+        "user": {
+            "name": "John Doe",
+            "role": "Freelancer",
+            "avatar": "images/avatar-placeholder.png"
+        },
+        "date_ranges": {
+            "options": [
+                {"value": "this-month", "label": "This Month"},
+                {"value": "last-month", "label": "Last Month"},
+                {"value": "this-quarter", "label": "This Quarter"},
+                {"value": "last-quarter", "label": "Last Quarter"},
+                {"value": "this-year", "label": "This Year", "selected": True},
+                {"value": "last-year", "label": "Last Year"},
+                {"value": "custom", "label": "Custom Range"}
+            ]
+        },
+        "summary": {
+            "income": {
+                "total": 126450.00,
+                "currency": "MYR",
+                "period": "Jan - Dec 2025"
+            },
+            "expenses": {
+                "total": 42380.00,
+                "currency": "MYR",
+                "period": "Jan - Dec 2025"
+            },
+            "profit": {
+                "total": 84070.00,
+                "currency": "MYR",
+                "period": "Jan - Dec 2025"
+            }
+        },
+        "income_distribution": [
+            {"category": "Development", "amount": 75870.00, "percentage": 60},
+            {"category": "Design", "amount": 30348.00, "percentage": 24},
+            {"category": "Consulting", "amount": 20232.00, "percentage": 16}
+        ],
+        "expense_distribution": [
+            {"category": "Software", "amount": 12714.00, "percentage": 30},
+            {"category": "Equipment", "amount": 10595.00, "percentage": 25},
+            {"category": "Office", "amount": 10595.00, "percentage": 25},
+            {"category": "Other", "amount": 8476.00, "percentage": 20}
+        ],
+        "recent_reports": [
+            {
+                "type": "pdf",
+                "title": "Annual Income & Expense Report (2025)",
+                "date": "15 May 2025"
+            },
+            {
+                "type": "csv",
+                "title": "Q1 Tax Summary (2025)",
+                "date": "02 April 2025"
+            },
+            {
+                "type": "doc",
+                "title": "Client Revenue Analysis (2024)",
+                "date": "10 January 2025"
+            }
+        ]
+    }
+
+def get_currencies_data():
+    return {
+        "user": {
+            "name": "John Doe",
+            "role": "Freelancer",
+            "avatar": "images/avatar-placeholder.png"
+        },
+        "last_update": "15 May 2025, 09:30 AM",
+        "primary_currency": {
+            "code": "MYR",
+            "name": "Malaysian Ringgit",
+            "income": 45680.00,
+            "expenses": 12450.00,
+            "balance": 33230.00
+        },
+        "currencies": [
+            {
+                "code": "USD",
+                "name": "US Dollar",
+                "symbol": "$",
+                "rate": 4.20,
+                "income": 5200.00,
+                "expenses": 1350.00,
+                "balance": 3850.00
+            },
+            {
+                "code": "EUR",
+                "name": "Euro",
+                "symbol": "€",
+                "rate": 4.95,
+                "income": 2100.00,
+                "expenses": 580.00,
+                "balance": 1520.00
+            },
+            {
+                "code": "GBP",
+                "name": "British Pound",
+                "symbol": "£",
+                "rate": 5.80,
+                "income": 1200.00,
+                "expenses": 0.00,
+                "balance": 1200.00
+            }
+        ],
+        "recent_transactions": [
+            {
+                "date": "15 May 2025",
+                "description": "UI/UX Design Project",
+                "amount": 2500.00,
+                "currency": "USD",
+                "rate": 4.20,
+                "myr_value": 10500.00,
+                "type": "income"
+            },
+            {
+                "date": "10 May 2025",
+                "description": "Adobe Creative Cloud",
+                "amount": 52.99,
+                "currency": "USD",
+                "rate": 4.18,
+                "myr_value": 221.50,
+                "type": "expense"
+            },
+            {
+                "date": "05 May 2025",
+                "description": "Web Development",
+                "amount": 1800.00,
+                "currency": "EUR",
+                "rate": 4.95,
+                "myr_value": 8910.00,
+                "type": "income"
+            },
+            {
+                "date": "28 Apr 2025",
+                "description": "Digital Ocean Hosting",
+                "amount": 25.00,
+                "currency": "USD",
+                "rate": 4.22,
+                "myr_value": 105.50,
+                "type": "expense"
+            },
+            {
+                "date": "20 Apr 2025",
+                "description": "Branding Project",
+                "amount": 1200.00,
+                "currency": "GBP",
+                "rate": 5.80,
+                "myr_value": 6960.00,
+                "type": "income"
+            }
+        ]
+    }
+
+def get_settings_data():
+    return {
+        "user": {
+            "name": "John Doe",
+            "role": "Freelancer",
+            "avatar": "images/avatar-placeholder.png",
+            "email": "john.doe@example.com",
+            "phone": "+60123456789"
+        },
+        "languages": [
+            {"code": "en", "name": "English", "selected": True},
+            {"code": "ms", "name": "Bahasa Malaysia"},
+            {"code": "zh", "name": "Chinese"},
+            {"code": "ta", "name": "Tamil"}
+        ],
+        "tax_info": {
+            "tax_id": "MY12345678",
+            "marital_status": [
+                {"value": "single", "label": "Single"},
+                {"value": "married", "label": "Married", "selected": True},
+                {"value": "divorced", "label": "Divorced"},
+                {"value": "widowed", "label": "Widowed"}
+            ],
+            "spouse_working": [
+                {"value": "working", "label": "Working"},
+                {"value": "not-working", "label": "Not Working", "selected": True}
+            ],
+            "children": {
+                "total": 2,
+                "higher_education": 1
+            },
+            "disability_status": [
+                {"value": "none", "label": "None", "selected": True},
+                {"value": "self", "label": "Self"},
+                {"value": "spouse", "label": "Spouse"},
+                {"value": "child", "label": "Child"}
+            ],
+            "business_type": [
+                {"value": "sole-proprietor", "label": "Sole Proprietor", "selected": True},
+                {"value": "partnership", "label": "Partnership"},
+                {"value": "llp", "label": "Limited Liability Partnership"},
+                {"value": "sdn-bhd", "label": "Sdn. Bhd."}
+            ]
+        },
+        "tax_relief_categories": [
+            {
+                "name": "Medical Expenses",
+                "limit": 8000.00,
+                "current": 3600.00,
+                "percentage": 45
+            },
+            {
+                "name": "EPF & Life Insurance",
+                "limit": 7000.00,
+                "current": 5950.00,
+                "percentage": 85
+            },
+            {
+                "name": "Lifestyle Relief",
+                "limit": 2500.00,
+                "current": 1500.00,
+                "percentage": 60
+            },
+            {
+                "name": "Education Fees (Self)",
+                "limit": 7000.00,
+                "current": 2100.00,
+                "percentage": 30
+            },
+            {
+                "name": "SOCSO Contributions",
+                "limit": 350.00,
+                "current": 350.00,
+                "percentage": 100
+            }
+        ],
+        "currencies": {
+            "primary": "MYR",
+            "options": [
+                {"code": "myr", "name": "Malaysian Ringgit (MYR)", "selected": True},
+                {"code": "usd", "name": "US Dollar (USD)"},
+                {"code": "sgd", "name": "Singapore Dollar (SGD)"},
+                {"code": "gbp", "name": "British Pound (GBP)"},
+                {"code": "eur", "name": "Euro (EUR)"}
+            ],
+            "active": [
+                {"code": "myr", "name": "Malaysian Ringgit (MYR)", "active": True},
+                {"code": "usd", "name": "US Dollar (USD)", "active": True},
+                {"code": "sgd", "name": "Singapore Dollar (SGD)", "active": True},
+                {"code": "gbp", "name": "British Pound (GBP)", "active": True},
+                {"code": "eur", "name": "Euro (EUR)", "active": True},
+                {"code": "aud", "name": "Australian Dollar (AUD)", "active": False},
+                {"code": "jpy", "name": "Japanese Yen (JPY)", "active": False}
+            ]
+        },
+        "storage": {
+            "used": 30.5,
+            "total": 100,
+            "percentage": 35
+        }
+    }
+
 # map each page to a route
 @app.route("/")
 def home():
@@ -292,20 +637,23 @@ def expenses():
 
 @app.route("/currencies")
 def currencies():
-    return render_template("currencies.html")
+    currencies_data = get_currencies_data()
+    return render_template("currencies.html", **currencies_data)
 
 @app.route("/tax-center")
 def tax_center():
-    # file is tax-center.html in templates/
-    return render_template("tax-center.html")
+    tax_data = get_tax_center_data()
+    return render_template("tax-center.html", **tax_data)
 
 @app.route("/reports")
 def reports():
-    return render_template("reports.html")
+    reports_data = get_reports_data()
+    return render_template("reports.html", **reports_data)
 
 @app.route("/settings")
 def settings():
-    return render_template("settings.html")
+    settings_data = get_settings_data()
+    return render_template("settings.html", **settings_data)
 
 if __name__ == "__main__":
     # debug=True for live reload during development
