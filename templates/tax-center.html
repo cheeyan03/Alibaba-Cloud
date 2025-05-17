@@ -67,9 +67,9 @@
                         <div class="tax-year-selector">
                             <label for="tax-year">Tax Year:</label>
                             <select id="tax-year" class="form-control">
-                                <option value="2025">2025</option>
-                                <option value="2024">2024</option>
-                                <option value="2023">2023</option>
+                                {% for year in tax_year.options %}
+                                <option value="{{ year }}" {% if year == tax_year.current %}selected{% endif %}>{{ year }}</option>
+                                {% endfor %}
                             </select>
                         </div>
                         <div class="tax-status-info">
@@ -77,31 +77,31 @@
                                 <i class="fas fa-file-invoice-dollar"></i>
                             </div>
                             <div class="tax-status-details">
-                                <h3>2025 Tax Filing</h3>
+                                <h3>{{ tax_year.current }} Tax Filing</h3>
                                 <div class="tax-deadline">
-                                    <p><i class="fas fa-calendar-alt"></i> Filing Deadline: April 30, 2025</p>
-                                    <p class="countdown">(15 days remaining)</p>
+                                    <p><i class="fas fa-calendar-alt"></i> Filing Deadline: {{ filing_status.deadline }}</p>
+                                    <p class="countdown">({{ filing_status.days_remaining }} days remaining)</p>
                                 </div>
                                 <div class="tax-progress">
                                     <div class="progress-bar">
-                                        <div class="progress" style="width: 65%;"></div>
+                                        <div class="progress" style="width: {{ filing_status.completion }}%;"></div>
                                     </div>
-                                    <p class="progress-text">65% Complete</p>
+                                    <p class="progress-text">{{ filing_status.completion }}% Complete</p>
                                 </div>
                             </div>
                         </div>
                         <div class="tax-amount-summary">
                             <div class="tax-amount-item">
                                 <span class="tax-label">Estimated Income</span>
-                                <span class="tax-value">RM 125,680.00</span>
+                                <span class="tax-value">RM {{ "{:,.2f}".format(filing_status.estimated_income) }}</span>
                             </div>
                             <div class="tax-amount-item">
                                 <span class="tax-label">Potential Deductions</span>
-                                <span class="tax-value">RM 24,350.00</span>
+                                <span class="tax-value">RM {{ "{:,.2f}".format(filing_status.potential_deductions) }}</span>
                             </div>
                             <div class="tax-amount-item highlight">
                                 <span class="tax-label">Estimated Tax Due</span>
-                                <span class="tax-value">RM 15,225.00</span>
+                                <span class="tax-value">RM {{ "{:,.2f}".format(filing_status.estimated_tax) }}</span>
                             </div>
                         </div>
                     </div>
@@ -123,21 +123,21 @@
                                         <div class="legend-color" style="background-color: var(--primary-color);"></div>
                                         <div class="legend-text">
                                             <span class="legend-label">Development</span>
-                                            <span class="legend-value">RM 85,400.00</span>
+                                            <span class="legend-value">RM {{ "{:,.2f}".format(income_summary.development) }}</span>
                                         </div>
                                     </div>
                                     <div class="legend-item">
                                         <div class="legend-color" style="background-color: var(--info);"></div>
                                         <div class="legend-text">
                                             <span class="legend-label">Design</span>
-                                            <span class="legend-value">RM 22,680.00</span>
+                                            <span class="legend-value">RM {{ "{:,.2f}".format(income_summary.design) }}</span>
                                         </div>
                                     </div>
                                     <div class="legend-item">
                                         <div class="legend-color" style="background-color: var(--success);"></div>
                                         <div class="legend-text">
                                             <span class="legend-label">Consulting</span>
-                                            <span class="legend-value">RM 17,600.00</span>
+                                            <span class="legend-value">RM {{ "{:,.2f}".format(income_summary.consulting) }}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -159,28 +159,28 @@
                                         <div class="legend-color" style="background-color: var(--primary-light);"></div>
                                         <div class="legend-text">
                                             <span class="legend-label">Equipment</span>
-                                            <span class="legend-value">RM 8,250.00</span>
+                                            <span class="legend-value">RM {{ "{:,.2f}".format(deduction_summary.equipment) }}</span>
                                         </div>
                                     </div>
                                     <div class="legend-item">
                                         <div class="legend-color" style="background-color: var(--success);"></div>
                                         <div class="legend-text">
                                             <span class="legend-label">Home Office</span>
-                                            <span class="legend-value">RM 6,100.00</span>
+                                            <span class="legend-value">RM {{ "{:,.2f}".format(deduction_summary.home_office) }}</span>
                                         </div>
                                     </div>
                                     <div class="legend-item">
                                         <div class="legend-color" style="background-color: var(--warning);"></div>
                                         <div class="legend-text">
                                             <span class="legend-label">Software</span>
-                                            <span class="legend-value">RM 5,400.00</span>
+                                            <span class="legend-value">RM {{ "{:,.2f}".format(deduction_summary.software) }}</span>
                                         </div>
                                     </div>
                                     <div class="legend-item">
                                         <div class="legend-color" style="background-color: var(--info);"></div>
                                         <div class="legend-text">
                                             <span class="legend-label">Training</span>
-                                            <span class="legend-value">RM 4,600.00</span>
+                                            <span class="legend-value">RM {{ "{:,.2f}".format(deduction_summary.training) }}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -198,73 +198,36 @@
                         </div>
                     </div>
                     <div class="tax-suggestions">
+                        {% for suggestion in suggestions %}
                         <div class="suggestion-item">
-                            <div class="suggestion-icon high">
+                            <div class="suggestion-icon {{ suggestion.priority }}">
                                 <i class="fas fa-lightbulb"></i>
                             </div>
                             <div class="suggestion-content">
-                                <h4>Increase Home Office Deduction</h4>
-                                <p>Based on your work patterns, you might be eligible for a higher home office deduction. Consider claiming 25% of your home utility bills.</p>
+                                <h4>{{ suggestion.title }}</h4>
+                                <p>{{ suggestion.description }}</p>
                                 <div class="suggestion-impact">
-                                    <span class="impact-label">Potential Savings:</span>
-                                    <span class="impact-value">+RM 1,850.00</span>
+                                    <span class="impact-label">
+                                        {% if suggestion.impact %}
+                                        Potential Savings:
+                                        {% else %}
+                                        Documentation:
+                                        {% endif %}
+                                    </span>
+                                    <span class="impact-value">
+                                        {% if suggestion.impact %}
+                                        +RM {{ "{:,.2f}".format(suggestion.impact) }}
+                                        {% else %}
+                                        {{ suggestion.items }} items
+                                        {% endif %}
+                                    </span>
                                 </div>
                             </div>
                             <div class="suggestion-action">
                                 <button class="btn btn-primary btn-sm">Apply</button>
                             </div>
                         </div>
-                        
-                        <div class="suggestion-item">
-                            <div class="suggestion-icon medium">
-                                <i class="fas fa-lightbulb"></i>
-                            </div>
-                            <div class="suggestion-content">
-                                <h4>Training & Professional Development</h4>
-                                <p>Your recent course payments qualify as professional development expenses. Add them to your tax deductions.</p>
-                                <div class="suggestion-impact">
-                                    <span class="impact-label">Potential Savings:</span>
-                                    <span class="impact-value">+RM 950.00</span>
-                                </div>
-                            </div>
-                            <div class="suggestion-action">
-                                <button class="btn btn-primary btn-sm">Apply</button>
-                            </div>
-                        </div>
-                        
-                        <div class="suggestion-item">
-                            <div class="suggestion-icon medium">
-                                <i class="fas fa-lightbulb"></i>
-                            </div>
-                            <div class="suggestion-content">
-                                <h4>Business Travel Deductions</h4>
-                                <p>Some of your travel expenses appear business-related but are not categorized for tax deductions. Review and recategorize them.</p>
-                                <div class="suggestion-impact">
-                                    <span class="impact-label">Potential Savings:</span>
-                                    <span class="impact-value">+RM 720.00</span>
-                                </div>
-                            </div>
-                            <div class="suggestion-action">
-                                <button class="btn btn-primary btn-sm">Apply</button>
-                            </div>
-                        </div>
-                        
-                        <div class="suggestion-item">
-                            <div class="suggestion-icon low">
-                                <i class="fas fa-lightbulb"></i>
-                            </div>
-                            <div class="suggestion-content">
-                                <h4>Missing Receipt Alert</h4>
-                                <p>You have 3 transactions marked as deductible but missing receipt documentation. Upload receipts to strengthen your tax claims.</p>
-                                <div class="suggestion-impact">
-                                    <span class="impact-label">Documentation:</span>
-                                    <span class="impact-value">3 items</span>
-                                </div>
-                            </div>
-                            <div class="suggestion-action">
-                                <button class="btn btn-primary btn-sm">Review</button>
-                            </div>
-                        </div>
+                        {% endfor %}
                     </div>
                 </div>
 
@@ -331,46 +294,18 @@
                         <h3>Recent Tax Activity</h3>
                     </div>
                     <div class="activity-list">
+                        {% for activity in recent_activity %}
                         <div class="activity-item">
                             <div class="activity-icon">
-                                <i class="fas fa-check-circle"></i>
+                                <i class="fas fa-{{ activity.type }}-circle"></i>
                             </div>
                             <div class="activity-content">
-                                <h4>New Deduction Added</h4>
-                                <p>Added "Adobe Creative Cloud" as a business expense</p>
-                                <span class="activity-time">Today, 10:25 AM</span>
+                                <h4>{{ activity.title }}</h4>
+                                <p>{{ activity.description }}</p>
+                                <span class="activity-time">{{ activity.time }}</span>
                             </div>
                         </div>
-                        <div class="activity-item">
-                            <div class="activity-icon">
-                                <i class="fas fa-file-pdf"></i>
-                            </div>
-                            <div class="activity-content">
-                                <h4>Tax Form Generated</h4>
-                                <p>Generated and downloaded draft Tax Form B</p>
-                                <span class="activity-time">Yesterday, 3:15 PM</span>
-                            </div>
-                        </div>
-                        <div class="activity-item">
-                            <div class="activity-icon">
-                                <i class="fas fa-receipt"></i>
-                            </div>
-                            <div class="activity-content">
-                                <h4>Receipt Uploaded</h4>
-                                <p>Added receipt for "Business Development Conference"</p>
-                                <span class="activity-time">April 12, 2025</span>
-                            </div>
-                        </div>
-                        <div class="activity-item">
-                            <div class="activity-icon">
-                                <i class="fas fa-calculator"></i>
-                            </div>
-                            <div class="activity-content">
-                                <h4>Tax Calculation</h4>
-                                <p>Updated tax estimation based on Q1 2025 income</p>
-                                <span class="activity-time">April 10, 2025</span>
-                            </div>
-                        </div>
+                        {% endfor %}
                     </div>
                 </div>
             </div>

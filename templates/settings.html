@@ -103,32 +103,31 @@
                                     <div class="profile-details">
                                         <div class="form-group">
                                             <label for="display-name">Display Name</label>
-                                            <input type="text" id="display-name" class="form-control" value="John Doe">
+                                            <input type="text" id="display-name" class="form-control" value="{{ user.name }}">
                                         </div>
                                         <div class="form-group">
                                             <label for="user-role">Role/Profession</label>
-                                            <input type="text" id="user-role" class="form-control" value="Freelancer">
+                                            <input type="text" id="user-role" class="form-control" value="{{ user.role }}">
                                         </div>
                                     </div>
                                 </div>
                                 
                                 <div class="form-group">
                                     <label for="email">Email Address</label>
-                                    <input type="email" id="email" class="form-control" value="john.doe@example.com">
+                                    <input type="email" id="email" class="form-control" value="{{ user.email }}">
                                 </div>
                                 
                                 <div class="form-row">
                                     <div class="form-group">
                                         <label for="phone">Phone Number</label>
-                                        <input type="tel" id="phone" class="form-control" value="+60123456789">
+                                        <input type="tel" id="phone" class="form-control" value="{{ user.phone }}">
                                     </div>
                                     <div class="form-group">
                                         <label for="language">Language</label>
                                         <select id="language" class="form-control">
-                                            <option value="en" selected>English</option>
-                                            <option value="ms">Bahasa Malaysia</option>
-                                            <option value="zh">Chinese</option>
-                                            <option value="ta">Tamil</option>
+                                            {% for lang in languages %}
+                                            <option value="{{ lang.code }}" {% if lang.selected %}selected{% endif %}>{{ lang.name }}</option>
+                                            {% endfor %}
                                         </select>
                                     </div>
                                 </div>
@@ -309,73 +308,80 @@
                             <div class="card-body">
                                 <div class="form-group">
                                     <label for="tax-id">Tax Identification Number</label>
-                                    <input type="text" id="tax-id" class="form-control" value="MY12345678">
+                                    <input type="text" id="tax-id" class="form-control" value="{{ tax_info.tax_id }}">
+                                </div>
+
+                                <h4 class="settings-subtitle">Personal Information</h4>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="marital-status">Marital Status</label>
+                                        <select id="marital-status" class="form-control">
+                                            {% for status in tax_info.marital_status %}
+                                            <option value="{{ status.value }}" {% if status.selected %}selected{% endif %}>{{ status.label }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="spouse-working">Spouse Working Status</label>
+                                        <select id="spouse-working" class="form-control">
+                                            {% for status in tax_info.spouse_working %}
+                                            <option value="{{ status.value }}" {% if status.selected %}selected{% endif %}>{{ status.label }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="num-children">Number of Children</label>
+                                        <input type="number" id="num-children" class="form-control" value="{{ tax_info.children.total }}">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="children-education">Children in Higher Education</label>
+                                        <input type="number" id="children-education" class="form-control" value="{{ tax_info.children.higher_education }}">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="disability-status">Disability Status</label>
+                                    <select id="disability-status" class="form-control">
+                                        {% for status in tax_info.disability_status %}
+                                        <option value="{{ status.value }}" {% if status.selected %}selected{% endif %}>{{ status.label }}</option>
+                                        {% endfor %}
+                                    </select>
                                 </div>
                                 
                                 <div class="form-group">
                                     <label for="business-type">Business Type</label>
                                     <select id="business-type" class="form-control">
-                                        <option value="sole-proprietor" selected>Sole Proprietor</option>
-                                        <option value="partnership">Partnership</option>
-                                        <option value="llp">Limited Liability Partnership</option>
-                                        <option value="sdn-bhd">Sdn. Bhd.</option>
+                                        {% for type in tax_info.business_type %}
+                                        <option value="{{ type.value }}" {% if type.selected %}selected{% endif %}>{{ type.label }}</option>
+                                        {% endfor %}
                                     </select>
                                 </div>
                                 
-                                <div class="form-group">
-                                    <label for="fiscal-year">Fiscal Year</label>
-                                    <select id="fiscal-year" class="form-control">
-                                        <option value="calendar" selected>Calendar Year (Jan-Dec)</option>
-                                        <option value="custom">Custom Fiscal Year</option>
-                                    </select>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="tax-threshold">Income Tax Threshold (RM)</label>
-                                    <input type="number" id="tax-threshold" class="form-control" value="50000">
-                                </div>
-                                
-                                <h4 class="settings-subtitle">Default Tax Categories</h4>
-                                
-                                <div class="tax-category-list">
+                                <h4 class="settings-subtitle">Tax Relief Categories</h4>
+                                <div class="tax-relief-list">
+                                    {% for category in tax_relief_categories %}
                                     <div class="tax-category-item">
                                         <div class="category-info">
-                                            <span>Software Subscriptions</span>
+                                            <span>{{ category.name }}</span>
+                                            <div class="relief-limit">Limit: RM {{ "{:,.0f}".format(category.limit) }}</div>
                                         </div>
-                                        <div class="category-status">
-                                            <span class="badge badge-deductible">Deductible</span>
-                                        </div>
-                                        <div class="category-actions">
-                                            <button class="btn-icon"><i class="fas fa-edit"></i></button>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="tax-category-item">
-                                        <div class="category-info">
-                                            <span>Office Equipment</span>
-                                        </div>
-                                        <div class="category-status">
-                                            <span class="badge badge-deductible">Deductible</span>
-                                        </div>
-                                        <div class="category-actions">
-                                            <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                        <div class="category-progress">
+                                            <div class="progress-bar">
+                                                <div class="progress" style="width: {{ category.percentage }}%;"></div>
+                                            </div>
+                                            <span class="progress-text">RM {{ "{:,.0f}".format(category.current) }} / RM {{ "{:,.0f}".format(category.limit) }}</span>
                                         </div>
                                     </div>
-                                    
-                                    <div class="tax-category-item">
-                                        <div class="category-info">
-                                            <span>Professional Development</span>
-                                        </div>
-                                        <div class="category-status">
-                                            <span class="badge badge-deductible">Deductible</span>
-                                        </div>
-                                        <div class="category-actions">
-                                            <button class="btn-icon"><i class="fas fa-edit"></i></button>
-                                        </div>
-                                    </div>
+                                    {% endfor %}
                                 </div>
                                 
-                                <button class="btn btn-sm"><i class="fas fa-plus"></i> Add Tax Category</button>
+                                <button class="btn btn-sm"><i class="fas fa-plus"></i> Add Tax Relief Category</button>
                             </div>
                         </div>
                     </div>
@@ -390,11 +396,9 @@
                                 <div class="form-group">
                                     <label for="primary-currency">Primary Currency</label>
                                     <select id="primary-currency" class="form-control">
-                                        <option value="myr" selected>Malaysian Ringgit (MYR)</option>
-                                        <option value="usd">US Dollar (USD)</option>
-                                        <option value="sgd">Singapore Dollar (SGD)</option>
-                                        <option value="gbp">British Pound (GBP)</option>
-                                        <option value="eur">Euro (EUR)</option>
+                                        {% for currency in currencies.options %}
+                                        <option value="{{ currency.code }}" {% if currency.selected %}selected{% endif %}>{{ currency.name }}</option>
+                                        {% endfor %}
                                     </select>
                                 </div>
                                 
@@ -419,34 +423,12 @@
                                 <h4 class="settings-subtitle">Active Currencies</h4>
                                 
                                 <div class="checkbox-group">
+                                    {% for currency in currencies.active %}
                                     <div class="checkbox-item">
-                                        <input type="checkbox" id="currency-myr" checked>
-                                        <label for="currency-myr">Malaysian Ringgit (MYR)</label>
+                                        <input type="checkbox" id="currency-{{ currency.code }}" {% if currency.active %}checked{% endif %}>
+                                        <label for="currency-{{ currency.code }}">{{ currency.name }}</label>
                                     </div>
-                                    <div class="checkbox-item">
-                                        <input type="checkbox" id="currency-usd" checked>
-                                        <label for="currency-usd">US Dollar (USD)</label>
-                                    </div>
-                                    <div class="checkbox-item">
-                                        <input type="checkbox" id="currency-sgd" checked>
-                                        <label for="currency-sgd">Singapore Dollar (SGD)</label>
-                                    </div>
-                                    <div class="checkbox-item">
-                                        <input type="checkbox" id="currency-gbp" checked>
-                                        <label for="currency-gbp">British Pound (GBP)</label>
-                                    </div>
-                                    <div class="checkbox-item">
-                                        <input type="checkbox" id="currency-eur" checked>
-                                        <label for="currency-eur">Euro (EUR)</label>
-                                    </div>
-                                    <div class="checkbox-item">
-                                        <input type="checkbox" id="currency-aud">
-                                        <label for="currency-aud">Australian Dollar (AUD)</label>
-                                    </div>
-                                    <div class="checkbox-item">
-                                        <input type="checkbox" id="currency-jpy">
-                                        <label for="currency-jpy">Japanese Yen (JPY)</label>
-                                    </div>
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
@@ -462,10 +444,10 @@
                                 <div class="storage-info">
                                     <div class="storage-meter">
                                         <div class="progress-bar">
-                                            <div class="progress" style="width: 35%;"></div>
+                                            <div class="progress" style="width: {{ storage.percentage }}%;"></div>
                                         </div>
                                         <div class="storage-text">
-                                            <span>30.5 MB used of 100 MB</span>
+                                            <span>{{ storage.used }} MB used of {{ storage.total }} MB</span>
                                         </div>
                                     </div>
                                 </div>
