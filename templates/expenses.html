@@ -39,8 +39,8 @@
                     <img src="{{ url_for('static', filename='images/avatar-placeholder.png') }}" 
                         alt="User Profile">
                     <div class="user-info">
-                        <p class="user-name">John Doe</p>
-                        <p class="user-role">Freelancer</p>
+                        <p class="user-name">{{ user.name }}</p>
+                        <p class="user-role">{{ user.role }}</p>
                     </div>
                 </div>
             </div>
@@ -81,39 +81,26 @@
                                 <label>Category:</label>
                                 <select class="filter-select">
                                     <option value="all">All Categories</option>
-                                    <option value="software">Software</option>
-                                    <option value="equipment">Equipment</option>
-                                    <option value="travel">Travel</option>
-                                    <option value="office">Office</option>
-                                    <option value="professional">Professional Services</option>
-                                    <option value="utilities">Utilities</option>
-                                    <option value="development">Development</option>
-                                    <option value="design">Design</option>
-                                    <option value="consulting">Consulting</option>
+                                    {% for category in filter_options.categories %}
+                                    <option value="{{ category.value }}">{{ category.label }}</option>
+                                    {% endfor %}
                                 </select>
                             </div>
                             <div class="filter-group">
                                 <label>Date:</label>
                                 <select class="filter-select">
-                                    <option value="all">All Time</option>
-                                    <option value="this-month">This Month</option>
-                                    <option value="last-month">Last Month</option>
-                                    <option value="this-quarter">This Quarter</option>
-                                    <option value="last-quarter">Last Quarter</option>
-                                    <option value="this-year">This Year</option>
-                                    <option value="last-year">Last Year</option>
-                                    <option value="custom">Custom Range</option>
+                                    {% for date_range in filter_options.date_ranges %}
+                                    <option value="{{ date_range.value }}">{{ date_range.label }}</option>
+                                    {% endfor %}
                                 </select>
                             </div>
                             <div class="filter-group">
                                 <label>Currency:</label>
                                 <select class="filter-select">
                                     <option value="all">All Currencies</option>
-                                    <option value="myr">MYR</option>
-                                    <option value="usd">USD</option>
-                                    <option value="eur">EUR</option>
-                                    <option value="gbp">GBP</option>
-                                    <option value="sgd">SGD</option>
+                                    {% for currency in filter_options.currencies %}
+                                    <option value="{{ currency.code }}">{{ currency.label }}</option>
+                                    {% endfor %}
                                 </select>
                             </div>
                             <button class="btn btn-sm">Apply Filters</button>
@@ -125,33 +112,33 @@
                 <div class="card-grid summary-grid">
                     <div class="card summary-card">
                         <div class="card-icon income-icon">
-                            <i class="fas fa-arrow-down"></i>
+                            <i class="fas fa-{{ summary.income.icon }}"></i>
                         </div>
                         <div class="card-content">
                             <h3 class="card-title">Total Income</h3>
-                            <p class="card-value">RM 45,680.00</p>
+                            <p class="card-value">{{ summary.income.currency }} {{ "{:,.2f}".format(summary.income.total) }}</p>
                             <p class="card-period">For selected period</p>
                         </div>
                     </div>
                     
                     <div class="card summary-card">
                         <div class="card-icon expense-icon">
-                            <i class="fas fa-arrow-up"></i>
+                            <i class="fas fa-{{ summary.expenses.icon }}"></i>
                         </div>
                         <div class="card-content">
                             <h3 class="card-title">Total Expenses</h3>
-                            <p class="card-value">RM 12,450.00</p>
+                            <p class="card-value">{{ summary.expenses.currency }} {{ "{:,.2f}".format(summary.expenses.total) }}</p>
                             <p class="card-period">For selected period</p>
                         </div>
                     </div>
                     
                     <div class="card summary-card">
                         <div class="card-icon receipt-icon">
-                            <i class="fas fa-receipt"></i>
+                            <i class="fas fa-{{ summary.tax_deductibles.icon }}"></i>
                         </div>
                         <div class="card-content">
                             <h3 class="card-title">Tax Deductibles</h3>
-                            <p class="card-value">RM 8,750.00</p>
+                            <p class="card-value">{{ summary.tax_deductibles.currency }} {{ "{:,.2f}".format(summary.tax_deductibles.total) }}</p>
                             <p class="card-period">Potential deductions</p>
                         </div>
                     </div>
@@ -180,108 +167,43 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr class="income-row">
-                                    <td>15 May 2025</td>
-                                    <td>Website Development</td>
-                                    <td>Development</td>
-                                    <td>ABC Corp</td>
-                                    <td class="amount income">+RM 5,200.00</td>
-                                    <td>MYR</td>
-                                    <td><span class="badge badge-taxable">Taxable</span></td>
+                                {% for transaction in transactions %}
+                                <tr class="{{ transaction.type }}-row">
+                                    <td>{{ transaction.date }}</td>
+                                    <td>{{ transaction.description }}</td>
+                                    <td>{{ transaction.category }}</td>
+                                    <td>{{ transaction.client_vendor }}</td>
+                                    <td class="amount {{ transaction.type }}">
+                                        {{ "+" if transaction.type == "income" else "-" }}{{ transaction.currency }} {{ "{:,.2f}".format(transaction.amount) }}
+                                    </td>
+                                    <td>{{ transaction.currency }}</td>
+                                    <td><span class="badge badge-{{ transaction.tax_status }}">{{ transaction.tax_status|title }}</span></td>
                                     <td class="actions-cell">
                                         <button class="btn-icon"><i class="fas fa-edit"></i></button>
                                         <button class="btn-icon"><i class="fas fa-trash-alt"></i></button>
                                     </td>
                                 </tr>
-                                <tr class="expense-row">
-                                    <td>12 May 2025</td>
-                                    <td>Adobe Creative Cloud</td>
-                                    <td>Software</td>
-                                    <td>Adobe Inc</td>
-                                    <td class="amount expense">-RM 280.00</td>
-                                    <td>MYR</td>
-                                    <td><span class="badge badge-deductible">Deductible</span></td>
-                                    <td class="actions-cell">
-                                        <button class="btn-icon"><i class="fas fa-edit"></i></button>
-                                        <button class="btn-icon"><i class="fas fa-trash-alt"></i></button>
-                                    </td>
-                                </tr>
-                                <tr class="income-row">
-                                    <td>10 May 2025</td>
-                                    <td>Logo Design Project</td>
-                                    <td>Design</td>
-                                    <td>XYZ StartUp</td>
-                                    <td class="amount income">+RM 1,800.00</td>
-                                    <td>MYR</td>
-                                    <td><span class="badge badge-taxable">Taxable</span></td>
-                                    <td class="actions-cell">
-                                        <button class="btn-icon"><i class="fas fa-edit"></i></button>
-                                        <button class="btn-icon"><i class="fas fa-trash-alt"></i></button>
-                                    </td>
-                                </tr>
-                                <tr class="expense-row">
-                                    <td>08 May 2025</td>
-                                    <td>Office Supplies</td>
-                                    <td>Equipment</td>
-                                    <td>Office Depot</td>
-                                    <td class="amount expense">-RM 150.00</td>
-                                    <td>MYR</td>
-                                    <td><span class="badge badge-deductible">Deductible</span></td>
-                                    <td class="actions-cell">
-                                        <button class="btn-icon"><i class="fas fa-edit"></i></button>
-                                        <button class="btn-icon"><i class="fas fa-trash-alt"></i></button>
-                                    </td>
-                                </tr>
-                                <tr class="expense-row">
-                                    <td>05 May 2025</td>
-                                    <td>Business Networking Event</td>
-                                    <td>Professional</td>
-                                    <td>KL Tech Conference</td>
-                                    <td class="amount expense">-RM 350.00</td>
-                                    <td>MYR</td>
-                                    <td><span class="badge badge-deductible">Deductible</span></td>
-                                    <td class="actions-cell">
-                                        <button class="btn-icon"><i class="fas fa-edit"></i></button>
-                                        <button class="btn-icon"><i class="fas fa-trash-alt"></i></button>
-                                    </td>
-                                </tr>
-                                <tr class="income-row">
-                                    <td>01 May 2025</td>
-                                    <td>UI/UX Consulting</td>
-                                    <td>Consulting</td>
-                                    <td>Tech Solutions Inc</td>
-                                    <td class="amount income">+USD 1,200.00</td>
-                                    <td>USD</td>
-                                    <td><span class="badge badge-taxable">Taxable</span></td>
-                                    <td class="actions-cell">
-                                        <button class="btn-icon"><i class="fas fa-edit"></i></button>
-                                        <button class="btn-icon"><i class="fas fa-trash-alt"></i></button>
-                                    </td>
-                                </tr>
-                                <tr class="expense-row">
-                                    <td>28 Apr 2025</td>
-                                    <td>Web Hosting (Annual)</td>
-                                    <td>Utilities</td>
-                                    <td>DigitalOcean</td>
-                                    <td class="amount expense">-USD 240.00</td>
-                                    <td>USD</td>
-                                    <td><span class="badge badge-deductible">Deductible</span></td>
-                                    <td class="actions-cell">
-                                        <button class="btn-icon"><i class="fas fa-edit"></i></button>
-                                        <button class="btn-icon"><i class="fas fa-trash-alt"></i></button>
-                                    </td>
-                                </tr>
+                                {% endfor %}
                             </tbody>
                         </table>
                     </div>
                     <div class="pagination">
-                        <button class="pagination-btn"><i class="fas fa-chevron-left"></i></button>
-                        <button class="pagination-btn active">1</button>
-                        <button class="pagination-btn">2</button>
-                        <button class="pagination-btn">3</button>
-                        <span class="pagination-ellipsis">...</span>
-                        <button class="pagination-btn">10</button>
-                        <button class="pagination-btn"><i class="fas fa-chevron-right"></i></button>
+                        <button class="pagination-btn" {% if not pagination.has_previous %}disabled{% endif %}>
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        {% for page in range(1, pagination.total_pages + 1) %}
+                            {% if page == pagination.current_page %}
+                                <button class="pagination-btn active">{{ page }}</button>
+                            {% elif page == 1 or page == pagination.total_pages or 
+                                    (page >= pagination.current_page - 1 and page <= pagination.current_page + 1) %}
+                                <button class="pagination-btn">{{ page }}</button>
+                            {% elif page == pagination.current_page - 2 or page == pagination.current_page + 2 %}
+                                <span class="pagination-ellipsis">...</span>
+                            {% endif %}
+                        {% endfor %}
+                        <button class="pagination-btn" {% if not pagination.has_next %}disabled{% endif %}>
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -315,11 +237,9 @@
                     <div class="form-group">
                         <label for="transaction-currency">Currency</label>
                         <select id="transaction-currency" class="form-control">
-                            <option value="myr">MYR</option>
-                            <option value="usd">USD</option>
-                            <option value="eur">EUR</option>
-                            <option value="gbp">GBP</option>
-                            <option value="sgd">SGD</option>
+                            {% for currency in filter_options.currencies %}
+                            <option value="{{ currency.code }}">{{ currency.label }}</option>
+                            {% endfor %}
                         </select>
                     </div>
                 </div>
@@ -332,15 +252,9 @@
                         <label for="transaction-category">Category</label>
                         <select id="transaction-category" class="form-control">
                             <option value="">Select a category</option>
-                            <option value="software">Software</option>
-                            <option value="equipment">Equipment</option>
-                            <option value="travel">Travel</option>
-                            <option value="office">Office</option>
-                            <option value="professional">Professional Services</option>
-                            <option value="utilities">Utilities</option>
-                            <option value="development">Development</option>
-                            <option value="design">Design</option>
-                            <option value="consulting">Consulting</option>
+                            {% for category in filter_options.categories %}
+                            <option value="{{ category.value }}">{{ category.label }}</option>
+                            {% endfor %}
                         </select>
                     </div>
                     <div class="form-group">
