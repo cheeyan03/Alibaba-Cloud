@@ -6,6 +6,23 @@
     <title>Expenses & Income | Expense Tracker</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .custom-date-inputs {
+            display: none;
+        }
+        .custom-date-inputs.active {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .filter-select, .search-box input {
+            transition: all 0.3s ease;
+        }
+        .filter-select:focus, .search-box input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(var(--primary-rgb), 0.1);
+        }
+    </style>
 </head>
 <body>
     <div class="app-container">
@@ -66,12 +83,12 @@
                     <div class="filter-container">
                         <div class="search-box">
                             <i class="fas fa-search"></i>
-                            <input type="text" placeholder="Search transactions...">
+                            <input type="text" id="search-input" placeholder="Search transactions...">
                         </div>
                         <div class="filter-options">
                             <div class="filter-group">
                                 <label>Type:</label>
-                                <select class="filter-select">
+                                <select class="filter-select" id="type-filter">
                                     <option value="all">All</option>
                                     <option value="income">Income</option>
                                     <option value="expense">Expense</option>
@@ -79,7 +96,7 @@
                             </div>
                             <div class="filter-group">
                                 <label>Category:</label>
-                                <select class="filter-select">
+                                <select class="filter-select" id="category-filter">
                                     <option value="all">All Categories</option>
                                     {% for category in filter_options.categories %}
                                     <option value="{{ category.value }}">{{ category.label }}</option>
@@ -88,22 +105,26 @@
                             </div>
                             <div class="filter-group">
                                 <label>Date:</label>
-                                <select class="filter-select">
+                                <select class="filter-select" id="date-filter">
                                     {% for date_range in filter_options.date_ranges %}
                                     <option value="{{ date_range.value }}">{{ date_range.label }}</option>
                                     {% endfor %}
                                 </select>
+                                <div class="custom-date-inputs" id="custom-date-inputs">
+                                    <input type="date" id="start-date" class="form-control">
+                                    <input type="date" id="end-date" class="form-control">
+                                </div>
                             </div>
                             <div class="filter-group">
                                 <label>Currency:</label>
-                                <select class="filter-select">
+                                <select class="filter-select" id="currency-filter">
                                     <option value="all">All Currencies</option>
                                     {% for currency in filter_options.currencies %}
                                     <option value="{{ currency.code }}">{{ currency.label }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
-                            <button class="btn btn-sm">Apply Filters</button>
+                            <button class="btn btn-sm" id="apply-filters">Apply Filters</button>
                         </div>
                     </div>
                 </div>
@@ -357,5 +378,164 @@
     </div>
 
     <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Elements
+            const searchInput = document.getElementById('search-input');
+            const typeFilter = document.getElementById('type-filter');
+            const categoryFilter = document.getElementById('category-filter');
+            const dateFilter = document.getElementById('date-filter');
+            const currencyFilter = document.getElementById('currency-filter');
+            const applyFiltersBtn = document.getElementById('apply-filters');
+            const customDateInputs = document.getElementById('custom-date-inputs');
+            const startDate = document.getElementById('start-date');
+            const endDate = document.getElementById('end-date');
+            const transactionsBody = document.querySelector('.transactions-table tbody');
+            const summaryCards = document.querySelectorAll('.summary-card .card-value');
+            const paginationContainer = document.querySelector('.pagination');
+
+            let currentPage = 1;
+            let debounceTimer;
+
+            // Show/hide custom date inputs based on date range selection
+            dateFilter.addEventListener('change', function() {
+                if (this.value === 'custom') {
+                    customDateInputs.classList.add('active');
+                } else {
+                    customDateInputs.classList.remove('active');
+                }
+            });
+
+            // Update table with new data
+            function updateTable(data) {
+                // Update transactions
+                transactionsBody.innerHTML = '';
+                data.transactions.forEach(transaction => {
+                    const row = document.createElement('tr');
+                    row.className = `${transaction.type}-row`;
+                    row.innerHTML = `
+                        <td>${transaction.date}</td>
+                        <td>${transaction.description}</td>
+                        <td>${transaction.category}</td>
+                        <td>${transaction.client_vendor}</td>
+                        <td class="amount ${transaction.type}">
+                            ${transaction.type === 'income' ? '+' : '-'}${transaction.currency} ${transaction.amount.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+                        </td>
+                        <td>${transaction.currency}</td>
+                        <td><span class="badge badge-${transaction.tax_status}">${transaction.tax_status.charAt(0).toUpperCase() + transaction.tax_status.slice(1)}</span></td>
+                        <td class="actions-cell">
+                            <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                            <button class="btn-icon"><i class="fas fa-trash-alt"></i></button>
+                        </td>
+                    `;
+                    transactionsBody.appendChild(row);
+                });
+
+                // Update summary cards
+                summaryCards[0].textContent = `${data.summary.income.currency} ${data.summary.income.total.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+                summaryCards[1].textContent = `${data.summary.expenses.currency} ${data.summary.expenses.total.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+                summaryCards[2].textContent = `${data.summary.tax_deductibles.currency} ${data.summary.tax_deductibles.total.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+
+                // Update pagination
+                updatePagination(data.pagination);
+            }
+
+            // Update pagination controls
+            function updatePagination(pagination) {
+                currentPage = pagination.current_page;
+                let paginationHTML = '';
+
+                // Previous button
+                paginationHTML += `
+                    <button class="pagination-btn" ${!pagination.has_previous ? 'disabled' : ''} data-page="${currentPage - 1}">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                `;
+
+                // Page numbers
+                for (let i = 1; i <= pagination.total_pages; i++) {
+                    if (i === 1 || i === pagination.total_pages || 
+                        (i >= currentPage - 1 && i <= currentPage + 1)) {
+                        paginationHTML += `
+                            <button class="pagination-btn ${i === currentPage ? 'active' : ''}" data-page="${i}">
+                                ${i}
+                            </button>
+                        `;
+                    } else if (i === currentPage - 2 || i === currentPage + 2) {
+                        paginationHTML += '<span class="pagination-ellipsis">...</span>';
+                    }
+                }
+
+                // Next button
+                paginationHTML += `
+                    <button class="pagination-btn" ${!pagination.has_next ? 'disabled' : ''} data-page="${currentPage + 1}">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                `;
+
+                paginationContainer.innerHTML = paginationHTML;
+
+                // Add click handlers to pagination buttons
+                document.querySelectorAll('.pagination-btn').forEach(btn => {
+                    if (!btn.disabled) {
+                        btn.addEventListener('click', () => {
+                            const page = parseInt(btn.dataset.page);
+                            if (page !== currentPage) {
+                                applyFilters(page);
+                            }
+                        });
+                    }
+                });
+            }
+
+            // Apply filters and fetch data
+            function applyFilters(page = 1) {
+                const filters = {
+                    search: searchInput.value,
+                    type: typeFilter.value,
+                    category: categoryFilter.value,
+                    currency: currencyFilter.value,
+                    date_range: dateFilter.value,
+                    page: page
+                };
+
+                if (dateFilter.value === 'custom') {
+                    filters.start_date = startDate.value;
+                    filters.end_date = endDate.value;
+                }
+
+                const queryString = Object.entries(filters)
+                    .filter(([_, value]) => value !== '')
+                    .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+                    .join('&');
+
+                fetch(`/expenses?${queryString}`, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    updateTable(data);
+                })
+                .catch(error => console.error('Error:', error));
+            }
+
+            // Event listeners
+            applyFiltersBtn.addEventListener('click', () => applyFilters(1));
+
+            // Search input with debounce
+            searchInput.addEventListener('input', () => {
+                clearTimeout(debounceTimer);
+                debounceTimer = setTimeout(() => applyFilters(1), 500);
+            });
+
+            // Initialize custom date inputs if needed
+            if (dateFilter.value === 'custom') {
+                customDateInputs.classList.add('active');
+            }
+
+        });
+    </script>
 </body>
 </html> 

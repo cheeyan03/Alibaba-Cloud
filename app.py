@@ -130,7 +130,10 @@ def get_dashboard_data():
         "tax_reminders": tax_reminders
     }
 
-def get_expenses_data():
+def get_expenses_data(filters=None):
+    if filters is None:
+        filters = {}
+
     # User profile data (reused from dashboard)
     user_data = {
         "name": "John Doe",
@@ -169,28 +172,9 @@ def get_expenses_data():
             {"value": "custom", "label": "Custom Range"}
         ]
     }
-    
-    # Summary data for selected period
-    summary_data = {
-        "income": {
-            "total": 45680.00,
-            "currency": "MYR",
-            "icon": "arrow-down"
-        },
-        "expenses": {
-            "total": 12450.00,
-            "currency": "MYR",
-            "icon": "arrow-up"
-        },
-        "tax_deductibles": {
-            "total": 8750.00,
-            "currency": "MYR",
-            "icon": "receipt"
-        }
-    }
-    
-    # Transactions data
-    transactions = [
+
+    # All transactions
+    all_transactions = [
         {
             "date": "2025-05-15",
             "description": "Website Development",
@@ -262,20 +246,124 @@ def get_expenses_data():
             "tax_status": "deductible"
         }
     ]
+
+    # Apply filters
+    filtered_transactions = all_transactions.copy()
     
-    # Pagination data
-    pagination = {
-        "current_page": 1,
-        "total_pages": 10,
-        "has_previous": False,
-        "has_next": True
+    if filters:
+        # Filter by search term
+        if filters.get('search'):
+            search_term = filters['search'].lower()
+            filtered_transactions = [
+                t for t in filtered_transactions
+                if search_term in t['description'].lower() or 
+                   search_term in t['client_vendor'].lower() or
+                   search_term in t['category'].lower()
+            ]
+
+        # Filter by type
+        if filters.get('type') and filters['type'] != 'all':
+            filtered_transactions = [
+                t for t in filtered_transactions
+                if t['type'] == filters['type']
+            ]
+
+        # Filter by category
+        if filters.get('category') and filters['category'] != 'all':
+            filtered_transactions = [
+                t for t in filtered_transactions
+                if t['category'].lower() == filters['category'].lower()
+            ]
+
+        # Filter by currency
+        if filters.get('currency') and filters['currency'] != 'all':
+            filtered_transactions = [
+                t for t in filtered_transactions
+                if t['currency'].lower() == filters['currency'].lower()
+            ]
+
+        # Filter by date range
+        if filters.get('date_range'):
+            today = datetime.now()
+            start_date = None
+            end_date = None
+
+            if filters['date_range'] == 'this-month':
+                start_date = today.replace(day=1)
+                end_date = (start_date + timedelta(days=32)).replace(day=1) - timedelta(days=1)
+            elif filters['date_range'] == 'last-month':
+                end_date = today.replace(day=1) - timedelta(days=1)
+                start_date = end_date.replace(day=1)
+            elif filters['date_range'] == 'this-quarter':
+                current_quarter = (today.month - 1) // 3
+                start_date = today.replace(month=current_quarter * 3 + 1, day=1)
+                end_date = start_date.replace(month=start_date.month + 3) - timedelta(days=1)
+            elif filters['date_range'] == 'last-quarter':
+                current_quarter = (today.month - 1) // 3
+                end_date = today.replace(month=current_quarter * 3 + 1, day=1) - timedelta(days=1)
+                start_date = end_date.replace(month=end_date.month - 2, day=1)
+            elif filters['date_range'] == 'this-year':
+                start_date = today.replace(month=1, day=1)
+                end_date = today.replace(month=12, day=31)
+            elif filters['date_range'] == 'last-year':
+                start_date = today.replace(year=today.year - 1, month=1, day=1)
+                end_date = today.replace(year=today.year - 1, month=12, day=31)
+            elif filters['date_range'] == 'custom':
+                if filters.get('start_date'):
+                    start_date = datetime.strptime(filters['start_date'], '%Y-%m-%d')
+                if filters.get('end_date'):
+                    end_date = datetime.strptime(filters['end_date'], '%Y-%m-%d')
+
+            if start_date or end_date:
+                filtered_transactions = [
+                    t for t in filtered_transactions
+                    if (not start_date or datetime.strptime(t['date'], '%Y-%m-%d') >= start_date) and
+                       (not end_date or datetime.strptime(t['date'], '%Y-%m-%d') <= end_date)
+                ]
+
+    # Calculate summary data for filtered transactions
+    income_total = sum(t['amount'] for t in filtered_transactions if t['type'] == 'income')
+    expenses_total = sum(t['amount'] for t in filtered_transactions if t['type'] == 'expense')
+    tax_deductibles_total = sum(t['amount'] for t in filtered_transactions if t['tax_status'] == 'deductible')
+
+    summary_data = {
+        "income": {
+            "total": income_total,
+            "currency": "MYR",
+            "icon": "arrow-down"
+        },
+        "expenses": {
+            "total": expenses_total,
+            "currency": "MYR",
+            "icon": "arrow-up"
+        },
+        "tax_deductibles": {
+            "total": tax_deductibles_total,
+            "currency": "MYR",
+            "icon": "receipt"
+        }
     }
     
+    # Pagination data
+    page = filters.get('page', 1)
+    per_page = 10
+    total_items = len(filtered_transactions)
+    total_pages = (total_items + per_page - 1) // per_page
+    start_idx = (page - 1) * per_page
+    end_idx = start_idx + per_page
+
+    pagination = {
+        "current_page": page,
+        "total_pages": total_pages,
+        "has_previous": page > 1,
+        "has_next": page < total_pages
+    }
+
     return {
         "user": user_data,
         "filter_options": filter_options,
         "summary": summary_data,
-        "transactions": transactions,
+        "transactions": filtered_transactions[start_idx:end_idx],
         "pagination": pagination
     }
 
@@ -647,7 +735,26 @@ def home():
 
 @app.route("/expenses")
 def expenses():
-    expenses_data = get_expenses_data()
+    filters = {
+        'search': request.args.get('search', ''),
+        'type': request.args.get('type', 'all'),
+        'category': request.args.get('category', 'all'),
+        'currency': request.args.get('currency', 'all'),
+        'date_range': request.args.get('date_range', 'all'),
+        'start_date': request.args.get('start_date'),
+        'end_date': request.args.get('end_date'),
+        'page': int(request.args.get('page', 1))
+    }
+    
+    expenses_data = get_expenses_data(filters)
+    
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        return jsonify({
+            'transactions': expenses_data['transactions'],
+            'summary': expenses_data['summary'],
+            'pagination': expenses_data['pagination']
+        })
+    
     return render_template("expenses.html", **expenses_data)
 
 @app.route("/currencies")
