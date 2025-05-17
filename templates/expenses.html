@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Expenses & Income | Expense Tracker</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -16,27 +16,28 @@
             </div>
             <ul class="nav-menu">
                 <li class="nav-item">
-                    <a href="index.html"><i class="fas fa-chart-line"></i> Dashboard</a>
+                    <a href="{{ url_for('home') }}"><i class="fas fa-chart-line"></i> Dashboard</a>
                 </li>
                 <li class="nav-item active">
-                    <a href="expenses.html"><i class="fas fa-receipt"></i> Expenses & Income</a>
+                    <a href="{{ url_for('expenses') }}"><i class="fas fa-receipt"></i> Expenses & Income</a>
                 </li>
                 <li class="nav-item">
-                    <a href="currencies.html"><i class="fas fa-exchange-alt"></i> Currency Tracker</a>
+                    <a href="{{ url_for('currencies') }}"><i class="fas fa-exchange-alt"></i> Currency Tracker</a>
                 </li>
                 <li class="nav-item">
-                    <a href="tax-center.html"><i class="fas fa-file-invoice"></i> Tax Center</a>
+                    <a href="{{ url_for('tax_center') }}"><i class="fas fa-file-invoice"></i> Tax Center</a>
                 </li>
                 <li class="nav-item">
-                    <a href="reports.html"><i class="fas fa-chart-pie"></i> Reports</a>
+                    <a href="{{ url_for('reports') }}"><i class="fas fa-chart-pie"></i> Reports</a>
                 </li>
                 <li class="nav-item">
-                    <a href="settings.html"><i class="fas fa-cog"></i> Settings</a>
+                    <a href="{{ url_for('settings') }}"><i class="fas fa-cog"></i> Settings</a>
                 </li>
             </ul>
             <div class="sidebar-footer">
                 <div class="user-profile">
-                    <img src="images/avatar-placeholder.png" alt="User Profile">
+                    <img src="{{ url_for('static', filename='images/avatar-placeholder.png') }}" 
+                        alt="User Profile">
                     <div class="user-info">
                         <p class="user-name">John Doe</p>
                         <p class="user-role">Freelancer</p>
@@ -441,6 +442,6 @@
         </div>
     </div>
 
-    <script src="js/app.js"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 </body>
 </html> 
