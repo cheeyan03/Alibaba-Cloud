@@ -14,8 +14,13 @@ def list_transactions():
     conn = get_connection()
     try:
         with conn.cursor() as cursor:
-            cursor.execute("SELECT * FROM transactions")
-            return cursor.fetchall()
+            # cursor.execute("SELECT * FROM transactions")
+            # return cursor.fetchall()
+            
+            # sort the transactions by date in descending order
+            cursor.execute("SELECT * FROM transactions ORDER BY date DESC")
+            transactions = cursor.fetchall()
+            return transactions
     finally:
         conn.close()
 
@@ -67,3 +72,14 @@ def list_categories():
         conn.close()
         
 # print(list_categories())
+
+def select_transaction(transaction_id):
+    conn = get_connection()
+    try:
+        with conn.cursor() as cursor:
+            cursor.execute("SELECT * FROM transactions WHERE id = %s", (transaction_id,))
+            return cursor.fetchone()
+    finally:
+        conn.close()
+        
+# print(select_transaction(52))

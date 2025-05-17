@@ -16,7 +16,9 @@ Extract all the text from the receipt and identify the following fields from the
 - Vendor
 - Total Amount
 - Currency
+- Type
 - Category
+- Description
 
 Return the result as a Python dictionary.
 
@@ -33,7 +35,8 @@ Return format example:
   "Total Amount": "185.00",
   "Currency": "MYR",
   "Type": "Expense",
-  "Category": "12"
+  "Category": "12",
+  "Description": "Laptop Purchase",
 }}
     """
 
@@ -76,7 +79,9 @@ Return format example:
 
         if "Date" in receipt_data:
             try:
-                receipt_data["Date"] = datetime.strptime(receipt_data["Date"], "%d/%m/%Y").date()
+                # receipt_data["Date"] = datetime.strptime(receipt_data["Date"], "%d/%m/%Y").date()
+                # convert it to YYYY-MM-DD format
+                receipt_data["Date"] = datetime.strptime(receipt_data["Date"], "%d/%m/%Y").strftime("%Y-%m-%d")
             except ValueError:
                 pass  # Optionally log or handle unsupported date format
 

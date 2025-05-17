@@ -1558,6 +1558,7 @@ document.getElementById("receipt-upload").addEventListener("change", async funct
                 document.getElementById("extracted-currency").value = d.Currency || "";
                 document.getElementById("extracted-type").value = d.Type || "";
                 document.getElementById("extracted-category").value = d.Category || "";
+                document.getElementById("extracted-description").value = d.Description || "";
 
             } else {
                 alert("Failed to extract receipt info.");
@@ -1569,6 +1570,96 @@ document.getElementById("receipt-upload").addEventListener("change", async funct
         alert("Error uploading file");
         console.error(err);
     }
+});
+
+document.getElementById("generate-transaction-btn").addEventListener("click", async function () {
+    // convert to YYYY-MM-DD format
+    const date = new Date(document.getElementById("extracted-date").value).toISOString().split("T")[0];
+    const vendor = document.getElementById("extracted-vendor").value;
+    const total = document.getElementById("extracted-total").value;
+    const currency = document.getElementById("extracted-currency").value;
+    const type = document.getElementById("extracted-type").value;
+    const categoryId = document.getElementById("extracted-category").value;
+    const description = document.getElementById("extracted-description").value;
+    const receiptUrl = receiptInfo.image_url || "";
+
+    const payload = {
+        date,
+        description: description,
+        client_vendor: vendor,
+        amount: parseFloat(total),
+        currency,
+        transaction_type: type,
+        category_id: parseInt(categoryId),
+        receipt_url: receiptUrl,
+    };
+
+    try {
+        const res = await fetch("/insert-transaction", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+        });
+
+        const data = await res.json();
+        if (data.success) {
+            alert("Transaction saved!");
+            // Optionally close modal or reset form
+        } else {
+            alert("Failed to save transaction: " + (data.error || "Unknown error"));
+        }
+        // Close modal
+        const modal = document.getElementById("receiptModal");
+        if (modal) {
+            modal.style.display = "none";
+        }
+        // Reset form
+        document.getElementById("receipt-upload").value = "";
+        document.getElementById("receipt-preview-img").style.display = "none";
+        document.getElementById("receipt-download-link").style.display = "none";
+    } catch (err) {
+        console.error("Save failed:", err);
+        alert("Save failed.");
+    }
+});
+
+
+window.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll("button[id^='delete-transaction-']").forEach(button => {
+        button.addEventListener("click", async function () {
+            const transactionId = button.dataset.id;  // ✅ using dataset
+
+            console.log("Clicked delete for ID:", transactionId); // ✅ log it
+
+            if (!transactionId) {
+                alert("Transaction ID missing.");
+                return;
+            }
+
+            const confirmDelete = confirm("Are you sure you want to delete this transaction?");
+            if (!confirmDelete) return;
+
+            try {
+                const res = await fetch("/delete-transaction", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ transaction_id: transactionId })
+                });
+
+                const result = await res.json();
+
+                if (result.success) {
+                    alert("Transaction deleted successfully.");
+                    window.location.reload();
+                } else {
+                    alert("Failed to delete transaction: " + (result.error || "Unknown error"));
+                }
+            } catch (err) {
+                console.error("Delete failed:", err);
+                alert("An error occurred while deleting.");
+            }
+        });
+    });
 });
 
 

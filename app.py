@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from werkzeug.utils import secure_filename
 from oss_manage_file import upload_to_oss  # function to upload to OSS
 from llm import parse_receipt_with_qwen  # function to parse receipt with Qwen
-from connect_db import list_transactions, list_categories
+from connect_db import list_transactions, list_categories, insert_transaction, delete_transaction
 
 app = Flask(
     __name__,
@@ -184,6 +184,7 @@ def get_expenses_data(filters=None):
 
     for row in db_rows:
         all_transactions.append({
+            "id": row["id"],
             "date": row["date"].strftime("%Y-%m-%d"),
             "description": row["description"],
             "category": category_lookup.get(row.get("category_id"), ""),   # assumed join with category
@@ -192,6 +193,7 @@ def get_expenses_data(filters=None):
             "currency": row["currency"],
             "type": row["transaction_type"].lower(),
             "tax_status": "",
+            "receipt_url": row["receipt_url"],
             # "tax_status": row.get("tax_status", "non-taxable")  # fallback
         })
         currencies_seen.add(row["currency"])
@@ -759,6 +761,50 @@ def extract_receipt_data():
 
     return jsonify({"success": True, "data": result})
 
+from flask import request
+
+@app.route("/insert-transaction", methods=["POST"])
+def insert_transaction_api():
+    data = request.get_json()
+
+    try:
+        # Extract from JSON
+        date = data.get("date")
+        description = data.get("description", "")
+        category_id = data.get("category_id")
+        client_vendor = data.get("client_vendor")
+        amount = data.get("amount")
+        currency = data.get("currency")
+        transaction_type = data.get("transaction_type")
+        receipt_url = data.get("receipt_url")
+
+        # Validate required fields
+        if not all([date, category_id, client_vendor, amount, currency, transaction_type]):
+            return jsonify({"success": False, "error": "Missing required fields"}), 400
+
+        # Insert into DB
+        success = insert_transaction(
+            date, description, category_id, client_vendor,
+            amount, currency, transaction_type, receipt_url
+        )
+
+        return jsonify({"success": success})
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+@app.route("/delete-transaction", methods=["POST"])
+def delete_transaction_api():
+    data = request.get_json()
+    transaction_id = data.get("transaction_id")
+    
+    if not transaction_id:
+        return jsonify({"success": False, "error": "Missing transaction_id"}), 400
+
+    try:
+        success = delete_transaction(transaction_id)
+        return jsonify({"success": success})
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
 
 if __name__ == "__main__":
     # debug=True for live reload during development
