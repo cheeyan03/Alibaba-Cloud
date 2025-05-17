@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from werkzeug.utils import secure_filename
 from oss_manage_file import upload_to_oss  # function to upload to OSS
 from llm import parse_receipt_with_qwen  # function to parse receipt with Qwen
-
+from connect_db import list_transactions, list_categories
 
 app = Flask(
     __name__,
@@ -138,6 +138,10 @@ def get_expenses_data(filters=None):
     if filters is None:
         filters = {}
 
+    # Fetch from database
+    categories = list_categories()  # Assume this returns list of strings like ['Software', 'Office']
+    category_lookup = {c["id"]: c["name"] for c in categories if "id" in c and "name" in c}
+
     # User profile data (reused from dashboard)
     user_data = {
         "name": "John Doe",
@@ -147,16 +151,10 @@ def get_expenses_data(filters=None):
     
     # Filter options
     filter_options = {
-        "categories": [
-            {"value": "software", "label": "Software"},
-            {"value": "equipment", "label": "Equipment"},
-            {"value": "travel", "label": "Travel"},
-            {"value": "office", "label": "Office"},
-            {"value": "professional", "label": "Professional Services"},
-            {"value": "utilities", "label": "Utilities"},
-            {"value": "development", "label": "Development"},
-            {"value": "design", "label": "Design"},
-            {"value": "consulting", "label": "Consulting"}
+        "categories" : [
+            {"value": c["name"].lower(), "label": c["name"]}
+            for c in sorted(categories, key=lambda x: x["name"])
+            if c.get("type") == "Expense"
         ],
         "currencies": [
             {"code": "myr", "label": "MYR"},
@@ -177,79 +175,26 @@ def get_expenses_data(filters=None):
         ]
     }
 
-    # All transactions
-    all_transactions = [
-        {
-            "date": "2025-05-15",
-            "description": "Website Development",
-            "category": "Development",
-            "client_vendor": "ABC Corp",
-            "amount": 5200.00,
-            "currency": "MYR",
-            "type": "income",
-            "tax_status": "taxable"
-        },
-        {
-            "date": "2025-05-12",
-            "description": "Adobe Creative Cloud",
-            "category": "Software",
-            "client_vendor": "Adobe Inc",
-            "amount": 280.00,
-            "currency": "MYR",
-            "type": "expense",
-            "tax_status": "deductible"
-        },
-        {
-            "date": "2025-05-10",
-            "description": "Logo Design Project",
-            "category": "Design",
-            "client_vendor": "XYZ StartUp",
-            "amount": 1800.00,
-            "currency": "MYR",
-            "type": "income",
-            "tax_status": "taxable"
-        },
-        {
-            "date": "2025-05-08",
-            "description": "Office Supplies",
-            "category": "Equipment",
-            "client_vendor": "Office Depot",
-            "amount": 150.00,
-            "currency": "MYR",
-            "type": "expense",
-            "tax_status": "deductible"
-        },
-        {
-            "date": "2025-05-05",
-            "description": "Business Networking Event",
-            "category": "Professional",
-            "client_vendor": "KL Tech Conference",
-            "amount": 350.00,
-            "currency": "MYR",
-            "type": "expense",
-            "tax_status": "deductible"
-        },
-        {
-            "date": "2025-05-01",
-            "description": "UI/UX Consulting",
-            "category": "Consulting",
-            "client_vendor": "Tech Solutions Inc",
-            "amount": 1200.00,
-            "currency": "USD",
-            "type": "income",
-            "tax_status": "taxable"
-        },
-        {
-            "date": "2025-04-28",
-            "description": "Web Hosting (Annual)",
-            "category": "Utilities",
-            "client_vendor": "DigitalOcean",
-            "amount": 240.00,
-            "currency": "USD",
-            "type": "expense",
-            "tax_status": "deductible"
-        }
-    ]
+    # Fetch from database
+    db_rows = list_transactions()
+
+    # Convert to unified format
+    all_transactions = []
+    currencies_seen = set()
+
+    for row in db_rows:
+        all_transactions.append({
+            "date": row["date"].strftime("%Y-%m-%d"),
+            "description": row["description"],
+            "category": category_lookup.get(row.get("category_id"), ""),   # assumed join with category
+            "client_vendor": row["client_vendor"],
+            "amount": float(row["amount"]),
+            "currency": row["currency"],
+            "type": row["transaction_type"].lower(),
+            "tax_status": "",
+            # "tax_status": row.get("tax_status", "non-taxable")  # fallback
+        })
+        currencies_seen.add(row["currency"])
 
     # Apply filters
     filtered_transactions = all_transactions.copy()
@@ -751,7 +696,7 @@ def expenses():
     }
     
     expenses_data = get_expenses_data(filters)
-    
+    # expenses_data = get_expenses_data()
     if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
         return jsonify({
             'transactions': expenses_data['transactions'],
