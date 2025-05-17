@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, jsonify
 from datetime import datetime, timedelta
 
 app = Flask(
@@ -429,8 +429,9 @@ def get_reports_data():
         ]
     }
 
-def get_currencies_data():
-    return {
+def get_currencies_data(sort_by='date', sort_order='desc'):
+    # Base data structure remains the same
+    data = {
         "user": {
             "name": "John Doe",
             "role": "Freelancer",
@@ -521,6 +522,20 @@ def get_currencies_data():
             }
         ]
     }
+
+    # Sort transactions based on parameters
+    if sort_by in ['date', 'description', 'amount', 'myr_value']:
+        reverse = sort_order == 'desc'
+        if sort_by == 'date':
+            data['recent_transactions'].sort(key=lambda x: x['date'], reverse=reverse)
+        elif sort_by == 'description':
+            data['recent_transactions'].sort(key=lambda x: x['description'].lower(), reverse=reverse)
+        elif sort_by == 'amount':
+            data['recent_transactions'].sort(key=lambda x: x['amount'], reverse=reverse)
+        elif sort_by == 'myr_value':
+            data['recent_transactions'].sort(key=lambda x: x['myr_value'], reverse=reverse)
+
+    return data
 
 def get_settings_data():
     return {
@@ -637,7 +652,13 @@ def expenses():
 
 @app.route("/currencies")
 def currencies():
-    currencies_data = get_currencies_data()
+    sort_by = request.args.get('sort', 'date')
+    sort_order = request.args.get('order', 'desc')
+    currencies_data = get_currencies_data(sort_by, sort_order)
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        return jsonify({
+            'transactions': currencies_data['recent_transactions']
+        })
     return render_template("currencies.html", **currencies_data)
 
 @app.route("/tax-center")

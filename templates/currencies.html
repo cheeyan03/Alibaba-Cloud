@@ -6,6 +6,33 @@
     <title>Currency Tracker | Expense Tracker</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .sortable {
+            cursor: pointer;
+            user-select: none;
+            position: relative;
+        }
+        
+        .sortable:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+        
+        .sortable i {
+            margin-left: 5px;
+            font-size: 0.8em;
+            opacity: 0.6;
+        }
+        
+        .sortable:hover i {
+            opacity: 1;
+        }
+        
+        .transactions-table th {
+            padding: 12px 15px;
+            transition: background-color 0.2s;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="app-container">
@@ -239,16 +266,16 @@
                         <table class="transactions-table">
                             <thead>
                                 <tr>
-                                    <th>Date <i class="fas fa-sort"></i></th>
-                                    <th>Description <i class="fas fa-sort"></i></th>
-                                    <th>Original Amount <i class="fas fa-sort"></i></th>
+                                    <th class="sortable" data-sort="date">Date <i class="fas fa-sort"></i></th>
+                                    <th class="sortable" data-sort="description">Description <i class="fas fa-sort"></i></th>
+                                    <th class="sortable" data-sort="amount">Original Amount <i class="fas fa-sort"></i></th>
                                     <th>Currency</th>
                                     <th>Exchange Rate</th>
-                                    <th>{{ primary_currency.code }} Value <i class="fas fa-sort"></i></th>
+                                    <th class="sortable" data-sort="myr_value">{{ primary_currency.code }} Value <i class="fas fa-sort"></i></th>
                                     <th>Type</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="transactions-body">
                                 {% for transaction in recent_transactions %}
                                 <tr class="{{ transaction.type }}-row">
                                     <td>{{ transaction.date }}</td>
@@ -312,5 +339,81 @@
     </div>
 
     <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tableHeaders = document.querySelectorAll('.sortable');
+            let currentSort = 'date';
+            let currentOrder = 'desc';
+
+            function updateSortIcons() {
+                tableHeaders.forEach(header => {
+                    const icon = header.querySelector('i');
+                    const sortField = header.dataset.sort;
+                    
+                    if (sortField === currentSort) {
+                        icon.className = currentOrder === 'asc' 
+                            ? 'fas fa-sort-up' 
+                            : 'fas fa-sort-down';
+                    } else {
+                        icon.className = 'fas fa-sort';
+                    }
+                });
+            }
+
+            function updateTransactionsTable(transactions) {
+                const tbody = document.getElementById('transactions-body');
+                tbody.innerHTML = '';
+                
+                transactions.forEach(transaction => {
+                    const row = document.createElement('tr');
+                    row.className = `${transaction.type}-row`;
+                    
+                    row.innerHTML = `
+                        <td>${transaction.date}</td>
+                        <td>${transaction.description}</td>
+                        <td>${transaction.currency} ${transaction.amount.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                        <td>${transaction.currency}</td>
+                        <td>${transaction.rate.toFixed(2)}</td>
+                        <td>{{ primary_currency.code }} ${transaction.myr_value.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                        <td><span class="badge badge-${transaction.type}">${transaction.type.charAt(0).toUpperCase() + transaction.type.slice(1)}</span></td>
+                    `;
+                    
+                    tbody.appendChild(row);
+                });
+            }
+
+            function sortTransactions(sortField) {
+                if (currentSort === sortField) {
+                    currentOrder = currentOrder === 'asc' ? 'desc' : 'asc';
+                } else {
+                    currentSort = sortField;
+                    currentOrder = 'asc';
+                }
+
+                updateSortIcons();
+
+                fetch(`/currencies?sort=${sortField}&order=${currentOrder}`, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    updateTransactionsTable(data.transactions);
+                })
+                .catch(error => console.error('Error:', error));
+            }
+
+            tableHeaders.forEach(header => {
+                header.addEventListener('click', () => {
+                    const sortField = header.dataset.sort;
+                    sortTransactions(sortField);
+                });
+            });
+
+            // Initialize sort icons
+            updateSortIcons();
+        });
+    </script>
 </body>
 </html> 
