@@ -40,8 +40,8 @@
                     <img src="{{ url_for('static', filename='images/avatar-placeholder.png') }}" 
                         alt="User Profile">
                     <div class="user-info">
-                        <p class="user-name">John Doe</p>
-                        <p class="user-role">Freelancer</p>
+                        <p class="user-name">{{ user.name }}</p>
+                        <p class="user-role">{{ user.role }}</p>
                     </div>
                 </div>
             </div>
@@ -73,8 +73,8 @@
                         </div>
                         <div class="card-content">
                             <h3 class="card-title">Total Income</h3>
-                            <p class="card-value">RM 45,680.00</p>
-                            <p class="card-change positive">+12% from last month</p>
+                            <p class="card-value">RM {{ "{:,.2f}".format(financial_summary.income.total) }}</p>
+                            <p class="card-change {{ financial_summary.income.trend }}">{{ financial_summary.income.change }}% from last month</p>
                         </div>
                     </div>
                     
@@ -84,8 +84,8 @@
                         </div>
                         <div class="card-content">
                             <h3 class="card-title">Total Expenses</h3>
-                            <p class="card-value">RM 12,450.00</p>
-                            <p class="card-change negative">+8% from last month</p>
+                            <p class="card-value">RM {{ "{:,.2f}".format(financial_summary.expenses.total) }}</p>
+                            <p class="card-change {{ financial_summary.expenses.trend }}">{{ financial_summary.expenses.change }}% from last month</p>
                         </div>
                     </div>
                     
@@ -95,8 +95,8 @@
                         </div>
                         <div class="card-content">
                             <h3 class="card-title">Net Savings</h3>
-                            <p class="card-value">RM 33,230.00</p>
-                            <p class="card-change positive">+15% from last month</p>
+                            <p class="card-value">RM {{ "{:,.2f}".format(financial_summary.savings.total) }}</p>
+                            <p class="card-change {{ financial_summary.savings.trend }}">{{ financial_summary.savings.change }}% from last month</p>
                         </div>
                     </div>
                     
@@ -106,9 +106,9 @@
                         </div>
                         <div class="card-content">
                             <h3 class="card-title">Est. Tax Due</h3>
-                            <p class="card-value">RM 5,325.00</p>
+                            <p class="card-value">RM {{ "{:,.2f}".format(financial_summary.tax_due.total) }}</p>
                             <div class="tax-deadline">
-                                <span>Due: 30 April 2025</span>
+                                <span>Due: {{ financial_summary.tax_due.deadline }}</span>
                             </div>
                         </div>
                     </div>
@@ -174,46 +174,31 @@
                         <div class="card-header">
                             <h3>Tax Deduction Opportunities</h3>
                             <div class="card-actions">
-                                <a href="tax-center.html" class="btn btn-text">View All</a>
+                                <a href="{{ url_for('tax_center') }}" class="btn btn-text">View All</a>
                             </div>
                         </div>
                         <div class="deduction-list">
+                            {% for deduction in tax_deductions %}
                             <div class="deduction-item">
                                 <div class="deduction-icon">
-                                    <i class="fas fa-laptop"></i>
+                                    <i class="fas fa-{{ deduction.icon }}"></i>
                                 </div>
                                 <div class="deduction-details">
-                                    <h4>Equipment & Supplies</h4>
-                                    <p>RM 3,200.00 in potential deductions</p>
+                                    <h4>{{ deduction.name }}</h4>
+                                    <div class="deduction-progress">
+                                        <div class="progress-bar">
+                                            <div class="progress" style="width: {{ deduction.percentage }}%;"></div>
+                                        </div>
+                                        <div class="progress-text">
+                                            <span>RM {{ "{:,.0f}".format(deduction.current_amount) }} / RM {{ "{:,.0f}".format(deduction.max_amount) }}</span>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="deduction-status">
-                                    <span class="status-badge highlight">High Impact</span>
+                                    <span class="status-badge {% if deduction.impact == 'high' %}highlight{% endif %}">{{ deduction.impact|title }} Impact</span>
                                 </div>
                             </div>
-                            <div class="deduction-item">
-                                <div class="deduction-icon">
-                                    <i class="fas fa-home"></i>
-                                </div>
-                                <div class="deduction-details">
-                                    <h4>Home Office</h4>
-                                    <p>RM 1,800.00 in potential deductions</p>
-                                </div>
-                                <div class="deduction-status">
-                                    <span class="status-badge">Medium Impact</span>
-                                </div>
-                            </div>
-                            <div class="deduction-item">
-                                <div class="deduction-icon">
-                                    <i class="fas fa-briefcase"></i>
-                                </div>
-                                <div class="deduction-details">
-                                    <h4>Professional Development</h4>
-                                    <p>RM 950.00 in potential deductions</p>
-                                </div>
-                                <div class="deduction-status">
-                                    <span class="status-badge">Medium Impact</span>
-                                </div>
-                            </div>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
@@ -223,70 +208,33 @@
                     <div class="card-header">
                         <h3>Recent Transactions</h3>
                         <div class="card-actions">
-                            <a href="expenses.html" class="btn btn-text">View All</a>
+                            <a href="{{ url_for('expenses') }}" class="btn btn-text">View All</a>
                         </div>
                     </div>
                     <div class="transactions-list">
+                        {% for transaction in transactions %}
                         <div class="transaction-item">
                             <div class="transaction-details">
-                                <div class="transaction-icon income">
-                                    <i class="fas fa-arrow-down"></i>
+                                <div class="transaction-icon {{ transaction.type }}">
+                                    <i class="fas fa-{{ transaction.icon }}"></i>
                                 </div>
                                 <div class="transaction-info">
-                                    <h4>Website Development</h4>
-                                    <p class="transaction-client">Client: ABC Corp</p>
+                                    <h4>{{ transaction.title }}</h4>
+                                    {% if transaction.client %}
+                                    <p class="transaction-client">Client: {{ transaction.client }}</p>
+                                    {% else %}
+                                    <p class="transaction-category">Category: {{ transaction.category }}</p>
+                                    {% endif %}
                                 </div>
                             </div>
                             <div class="transaction-meta">
-                                <div class="transaction-amount income">+ RM 5,200.00</div>
-                                <div class="transaction-date">15 May 2025</div>
+                                <div class="transaction-amount {{ transaction.type }}">
+                                    {{ "+" if transaction.type == "income" else "-" }} RM {{ "{:,.2f}".format(transaction.amount) }}
+                                </div>
+                                <div class="transaction-date">{{ transaction.date }}</div>
                             </div>
                         </div>
-                        <div class="transaction-item">
-                            <div class="transaction-details">
-                                <div class="transaction-icon expense">
-                                    <i class="fas fa-arrow-up"></i>
-                                </div>
-                                <div class="transaction-info">
-                                    <h4>Adobe Creative Cloud</h4>
-                                    <p class="transaction-category">Category: Software</p>
-                                </div>
-                            </div>
-                            <div class="transaction-meta">
-                                <div class="transaction-amount expense">- RM 280.00</div>
-                                <div class="transaction-date">12 May 2025</div>
-                            </div>
-                        </div>
-                        <div class="transaction-item">
-                            <div class="transaction-details">
-                                <div class="transaction-icon income">
-                                    <i class="fas fa-arrow-down"></i>
-                                </div>
-                                <div class="transaction-info">
-                                    <h4>Logo Design Project</h4>
-                                    <p class="transaction-client">Client: XYZ StartUp</p>
-                                </div>
-                            </div>
-                            <div class="transaction-meta">
-                                <div class="transaction-amount income">+ RM 1,800.00</div>
-                                <div class="transaction-date">10 May 2025</div>
-                            </div>
-                        </div>
-                        <div class="transaction-item">
-                            <div class="transaction-details">
-                                <div class="transaction-icon expense">
-                                    <i class="fas fa-arrow-up"></i>
-                                </div>
-                                <div class="transaction-info">
-                                    <h4>Office Supplies</h4>
-                                    <p class="transaction-category">Category: Equipment</p>
-                                </div>
-                            </div>
-                            <div class="transaction-meta">
-                                <div class="transaction-amount expense">- RM 150.00</div>
-                                <div class="transaction-date">08 May 2025</div>
-                            </div>
-                        </div>
+                        {% endfor %}
                     </div>
                 </div>
                 
@@ -299,30 +247,20 @@
                         </div>
                     </div>
                     <div class="reminder-list">
-                        <div class="reminder-item urgent">
+                        {% for reminder in tax_reminders %}
+                        <div class="reminder-item {{ reminder.urgency }}">
                             <div class="reminder-icon">
-                                <i class="fas fa-exclamation-circle"></i>
+                                <i class="fas fa-{{ reminder.icon }}"></i>
                             </div>
                             <div class="reminder-details">
-                                <h4>Income Tax Filing Due</h4>
-                                <p>30 Apr 2025 (15 days remaining)</p>
+                                <h4>{{ reminder.title }}</h4>
+                                <p>{{ reminder.deadline }} ({{ reminder.days_remaining }} days remaining)</p>
                             </div>
                             <div class="reminder-actions">
-                                <button class="btn btn-sm">Prepare Now</button>
+                                <button class="btn btn-sm {% if reminder.urgency != 'urgent' %}btn-outline{% endif %}">{{ reminder.action }}</button>
                             </div>
                         </div>
-                        <div class="reminder-item">
-                            <div class="reminder-icon">
-                                <i class="fas fa-file-invoice"></i>
-                            </div>
-                            <div class="reminder-details">
-                                <h4>Quarterly Tax Estimate</h4>
-                                <p>30 Jun 2025 (45 days remaining)</p>
-                            </div>
-                            <div class="reminder-actions">
-                                <button class="btn btn-sm btn-outline">Review</button>
-                            </div>
-                        </div>
+                        {% endfor %}
                     </div>
                 </div>
             </div>

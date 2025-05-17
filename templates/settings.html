@@ -311,6 +311,50 @@
                                     <label for="tax-id">Tax Identification Number</label>
                                     <input type="text" id="tax-id" class="form-control" value="MY12345678">
                                 </div>
+
+                                <h4 class="settings-subtitle">Personal Information</h4>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="marital-status">Marital Status</label>
+                                        <select id="marital-status" class="form-control">
+                                            <option value="single">Single</option>
+                                            <option value="married" selected>Married</option>
+                                            <option value="divorced">Divorced</option>
+                                            <option value="widowed">Widowed</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="spouse-working">Spouse Working Status</label>
+                                        <select id="spouse-working" class="form-control">
+                                            <option value="working">Working</option>
+                                            <option value="not-working" selected>Not Working</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="num-children">Number of Children</label>
+                                        <input type="number" id="num-children" class="form-control" value="2">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="children-education">Children in Higher Education</label>
+                                        <input type="number" id="children-education" class="form-control" value="1">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="disability-status">Disability Status</label>
+                                    <select id="disability-status" class="form-control">
+                                        <option value="none" selected>None</option>
+                                        <option value="self">Self</option>
+                                        <option value="spouse">Spouse</option>
+                                        <option value="child">Child</option>
+                                    </select>
+                                </div>
                                 
                                 <div class="form-group">
                                     <label for="business-type">Business Type</label>
@@ -322,60 +366,74 @@
                                     </select>
                                 </div>
                                 
-                                <div class="form-group">
-                                    <label for="fiscal-year">Fiscal Year</label>
-                                    <select id="fiscal-year" class="form-control">
-                                        <option value="calendar" selected>Calendar Year (Jan-Dec)</option>
-                                        <option value="custom">Custom Fiscal Year</option>
-                                    </select>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="tax-threshold">Income Tax Threshold (RM)</label>
-                                    <input type="number" id="tax-threshold" class="form-control" value="50000">
-                                </div>
-                                
-                                <h4 class="settings-subtitle">Default Tax Categories</h4>
-                                
-                                <div class="tax-category-list">
+                                <h4 class="settings-subtitle">Tax Relief Categories</h4>
+                                <div class="tax-relief-list">
                                     <div class="tax-category-item">
                                         <div class="category-info">
-                                            <span>Software Subscriptions</span>
+                                            <span>Medical Expenses</span>
+                                            <div class="relief-limit">Limit: RM 8,000</div>
                                         </div>
-                                        <div class="category-status">
-                                            <span class="badge badge-deductible">Deductible</span>
-                                        </div>
-                                        <div class="category-actions">
-                                            <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                        <div class="category-progress">
+                                            <div class="progress-bar">
+                                                <div class="progress" style="width: 45%;"></div>
+                                            </div>
+                                            <span class="progress-text">RM 3,600 / RM 8,000</span>
                                         </div>
                                     </div>
                                     
                                     <div class="tax-category-item">
                                         <div class="category-info">
-                                            <span>Office Equipment</span>
+                                            <span>EPF & Life Insurance</span>
+                                            <div class="relief-limit">Limit: RM 7,000</div>
                                         </div>
-                                        <div class="category-status">
-                                            <span class="badge badge-deductible">Deductible</span>
-                                        </div>
-                                        <div class="category-actions">
-                                            <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                        <div class="category-progress">
+                                            <div class="progress-bar">
+                                                <div class="progress" style="width: 85%;"></div>
+                                            </div>
+                                            <span class="progress-text">RM 5,950 / RM 7,000</span>
                                         </div>
                                     </div>
                                     
                                     <div class="tax-category-item">
                                         <div class="category-info">
-                                            <span>Professional Development</span>
+                                            <span>Lifestyle Relief</span>
+                                            <div class="relief-limit">Limit: RM 2,500</div>
                                         </div>
-                                        <div class="category-status">
-                                            <span class="badge badge-deductible">Deductible</span>
+                                        <div class="category-progress">
+                                            <div class="progress-bar">
+                                                <div class="progress" style="width: 60%;"></div>
+                                            </div>
+                                            <span class="progress-text">RM 1,500 / RM 2,500</span>
                                         </div>
-                                        <div class="category-actions">
-                                            <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                        </div>
+                                        <div class="tax-category-item">
+                                            <div class="category-info">
+                                                <span>Education Fees (Self)</span>
+                                                <div class="relief-limit">Limit: RM 7,000</div>
+                                            </div>
+                                            <div class="category-progress">
+                                                <div class="progress-bar">
+                                                    <div class="progress" style="width: 30%;"></div>
+                                                </div>
+                                                <span class="progress-text">RM 2,100 / RM 7,000</span>
+                                            </div>
+                                        </div>
+    
+                                        <div class="tax-category-item">
+                                            <div class="category-info">
+                                                <span>SOCSO Contributions</span>
+                                                <div class="relief-limit">Limit: RM 350</div>
+                                            </div>
+                                            <div class="category-progress">
+                                                <div class="progress-bar">
+                                                    <div class="progress" style="width: 100%;"></div>
+                                                </div>
+                                                <span class="progress-text">RM 350 / RM 350</span>
                                         </div>
                                     </div>
                                 </div>
                                 
-                                <button class="btn btn-sm"><i class="fas fa-plus"></i> Add Tax Category</button>
+                                <button class="btn btn-sm"><i class="fas fa-plus"></i> Add Tax Relief Category</button>
                             </div>
                         </div>
                     </div>
