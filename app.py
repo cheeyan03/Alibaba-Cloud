@@ -151,10 +151,14 @@ def get_expenses_data(filters=None):
     
     # Filter options
     filter_options = {
+        # "categories" : [
+        #     {"value": c["name"].lower(), "label": c["name"]}
+        #     for c in sorted(categories, key=lambda x: x["name"])
+        #     # if c.get("type") == "Expense"
+        # ],
         "categories" : [
-            {"value": c["name"].lower(), "label": c["name"]}
+            {"value": c["id"], "label": c["name"]}
             for c in sorted(categories, key=lambda x: x["name"])
-            if c.get("type") == "Expense"
         ],
         "currencies": [
             {"code": "myr", "label": "MYR"},
@@ -174,6 +178,7 @@ def get_expenses_data(filters=None):
             {"value": "custom", "label": "Custom Range"}
         ]
     }
+    print("Filter options:", filter_options["categories"])
 
     # Fetch from database
     db_rows = list_transactions()
@@ -187,7 +192,8 @@ def get_expenses_data(filters=None):
             "id": row["id"],
             "date": row["date"].strftime("%Y-%m-%d"),
             "description": row["description"],
-            "category": category_lookup.get(row.get("category_id"), ""),   # assumed join with category
+            "category_name": category_lookup.get(row.get("category_id"), ""),   # assumed join with category
+            "category": row["category_id"],
             "client_vendor": row["client_vendor"],
             "amount": float(row["amount"]),
             "currency": row["currency"],
@@ -223,8 +229,10 @@ def get_expenses_data(filters=None):
         if filters.get('category') and filters['category'] != 'all':
             filtered_transactions = [
                 t for t in filtered_transactions
-                if t['category'].lower() == filters['category'].lower()
+                # if t['category'].lower() == filters['category'].lower()
+                if t['category'] == int(filters['category'])
             ]
+            print("Filtered transactions:", filtered_transactions)
 
         # Filter by currency
         if filters.get('currency') and filters['currency'] != 'all':

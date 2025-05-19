@@ -195,7 +195,7 @@
                                 <tr class="{{ transaction.type }}-row">
                                     <td>{{ transaction.date }}</td>
                                     <td>{{ transaction.description }}</td>
-                                    <td>{{ transaction.category }}</td>
+                                    <td>{{ transaction.category_name }}</td>
                                     <td>{{ transaction.client_vendor }}</td>
                                     <td class="amount {{ transaction.type }}">
                                         {{ "+" if transaction.type == "income" else "-" }}{{ transaction.currency }} {{ "{:,.2f}".format(transaction.amount) }}
@@ -203,7 +203,7 @@
                                     <td>{{ transaction.currency }}</td>
                                     <td>
                                         <a href="{{ transaction.receipt_url }}" target="_blank">
-                                            {{ transaction.receipt_url if transaction.receipt_url else "No Receipt" }}
+                                            {{ transaction.receipt_url if transaction.receipt_url else "" }}
                                         </a>                                        
                                     </td>
                                     <td class="actions-cell">
@@ -446,7 +446,7 @@
                     row.innerHTML = `
                         <td>${transaction.date}</td>
                         <td>${transaction.description}</td>
-                        <td>${transaction.category}</td>
+                        <td>${transaction.category_name}</td>
                         <td>${transaction.client_vendor}</td>
                         <td class="amount ${transaction.type}">
                             ${transaction.type === 'income' ? '+' : '-'}${transaction.currency} ${transaction.amount.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}
@@ -608,6 +608,22 @@
             if (dateFilter.value === 'custom') {
                 customDateInputs.classList.add('active');
             }
+
+            // Initial pagination buttons (rendered by Jinja)
+            document.querySelectorAll('.pagination-btn').forEach(btn => {
+                if (!btn.disabled) {
+                    btn.addEventListener('click', () => {
+                        const page = parseInt(btn.textContent.trim());
+                        if (!isNaN(page)) {
+                            applyFilters(page);  // Load selected page
+                        } else if (btn.querySelector('.fa-chevron-left')) {
+                            applyFilters(currentPage - 1);
+                        } else if (btn.querySelector('.fa-chevron-right')) {
+                            applyFilters(currentPage + 1);
+                        }
+                    });
+                }
+            });
 
         });
     </script>
