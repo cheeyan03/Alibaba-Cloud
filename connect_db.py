@@ -1,15 +1,24 @@
 import pymysql
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+host = os.getenv("DB_HOST")
+port = int(os.getenv("DB_PORT"))
+user = os.getenv("DB_USER")
+password = os.getenv("DB_PASSWORD")
+database = os.getenv("DB_NAME")
 
 def get_connection():
     return pymysql.connect(
-        host='rm-zf8057850qf43482xbo.mysql.kualalumpur.rds.aliyuncs.com',
-        port=3306,
-        user='db_admin',
-        passwd='db_admin123',
-        db='transaction',
+        host=host,
+        port=port,
+        user=user,
+        password=password,
+        database=database,
         cursorclass=pymysql.cursors.DictCursor  # returns rows as dictionaries
     )
-
 def list_transactions():
     conn = get_connection()
     try:
