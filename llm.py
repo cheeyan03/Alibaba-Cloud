@@ -2,13 +2,14 @@ import os
 import ast
 from openai import OpenAI
 from dotenv import load_dotenv
-from connect_db import list_categories
+from connect_db import list_categories, list_tax_limits
 
 load_dotenv()
 
 # category_list = ["Development", "Software", "Design", "Equipment", "Professional", "Consulting", "Utilities"]
 # category_list = [{'id': 1, 'name': 'Salary', 'type': 'Income'}, {'id': 2, 'name': 'Rental Income', 'type': 'Income'}, {'id': 3, 'name': 'Dividends', 'type': 'Income'}, {'id': 4, 'name': 'Interests', 'type': 'Income'}, {'id': 5, 'name': 'Pensions', 'type': 'Income'}, {'id': 6, 'name': 'Annuities or Other Periodic Payments', 'type': 'Income'}, {'id': 7, 'name': 'Aggregate of Other Statutory Income from Sources Outside Malaysia', 'type': 'Income'}, {'id': 8, 'name': 'Self Relief', 'type': 'Expense'}, {'id': 9, 'name': 'EPF (KWSP) + Life Insurance', 'type': 'Expense'}, {'id': 10, 'name': 'Medical Expenses (Self & Parents)', 'type': 'Expense'}, {'id': 11, 'name': 'Lifestyle Expenses', 'type': 'Expense'}, {'id': 12, 'name': 'Lifestyle (Additional for Tech)', 'type': 'Expense'}, {'id': 13, 'name': 'Parental Care', 'type': 'Expense'}, {'id': 14, 'name': 'Education Fee (Self)', 'type': 'Expense'}, {'id': 15, 'name': 'Childcare/Education (Children)', 'type': 'Expense'}, {'id': 16, 'name': 'Breastfeeding Equipment', 'type': 'Expense'}, {'id': 17, 'name': 'Disabled Individual / Spouse / Child', 'type': 'Expense'}, {'id': 18, 'name': 'SSPN Savings', 'type': 'Expense'}, {'id': 19, 'name': 'Education & Medical Insurance', 'type': 'Expense'}, {'id': 20, 'name': 'SOCSO / EIS Contributions', 'type': 'Expense'}, {'id': 21, 'name': 'Zakat / Fitrah', 'type': 'Expense'}, {'id': 22, 'name': 'EPF and Life Insurance Premium', 'type': 'Expense'}]
 category_list = list_categories()
+tax_limits = list_tax_limits()
 
 def parse_receipt_with_qwen(image_url: str) -> dict:
     prompt = f"""
@@ -95,6 +96,76 @@ Return format example:
 
         return receipt_data
 
+    except Exception as e:
+        print(f"Error message: {e}")
+        return {"error": str(e)}
+
+def generate_tax_report(transactions: str) -> dict:
+    prompt = f"""
+Generate a tax report based on the following transactions and categories.
+Transactions:
+{transactions} 
+
+Categories:
+{category_list}
+
+Tax Limits:
+{tax_limits}
+
+The report should include:
+1. Total Income
+2. Total Expenses
+3. Taxable Deductibles
+4. Estimated Income
+5. Potential Deductions
+6. Taxable Income
+7. Estimated Tax
+8. Tax Deductions Breakdown for each category
+
+Return the result as a Python dictionary.
+Example:
+{
+  "Total Income": 50000,
+  "Total Expenses": 20000,
+  "Taxable Deductibles": 10000,
+  "Estimated Income": 40000,
+  "Potential Deductions": 5000,
+  "Taxable Income": 35000,
+  "Estimated Tax": 5000,
+  "Tax Deductions Breakdown": {
+    "Category 1": 2000,
+    "Category 2": 3000
+    }
+}
+    """
+
+    try:
+        client = OpenAI(
+            api_key=os.environ["DASHSCOPE_API_KEY"],
+            base_url="https://dashscope-intl.aliyuncs.com/compatible-mode/v1",
+        )
+
+        response = client.chat.completions.create(
+            model="qwen-plus",
+            messages=[
+                {
+                    "role": "system",
+                    "content": [{"type": "text", "text": "You are a tax report assistant."}],
+                },
+                {
+                    "role": "user",
+                    "content": [
+                        {"type": "text", "text": prompt},
+                    ],
+                },
+            ],
+        )
+
+        content = response.choices[0].message.content.strip()
+        
+        # Convert string to dictionary safely
+        report = ast.literal_eval(content)
+        return report
     except Exception as e:
         print(f"Error message: {e}")
         return {"error": str(e)}

@@ -2756,17 +2756,17 @@ input:checked + .toggle-slider:before {
 }
 
 .income-icon {
-    background-color: rgba(52, 211, 153, 0.1);
+    background-color: rgba(52, 211, 153);
     color: var(--success);
 }
 
 .expense-icon {
-    background-color: rgba(248, 113, 113, 0.1);
+    background-color: rgba(248, 113, 113);
     color: var(--error);
 }
 
 .profit-icon {
-    background-color: rgba(94, 106, 210, 0.1);
+    background-color: rgba(94, 106, 210);
     color: var(--primary-color);
 }
 
